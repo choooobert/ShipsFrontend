@@ -6,7 +6,7 @@ dist/
 tmp/
 app/**/*.js
 app/**/*.js.map
-/out-tsc
+    /out-tsc
 # Only exists if Bazel was run
 /bazel-out
 
