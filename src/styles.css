@@ -1723,7 +1723,7 @@
    color: #ebebeb;
    background-color: rgba(255, 255, 255, 0.075);
  }
- 
+
  .table-primary,
  .table-primary > th,
  .table-primary > td {
@@ -2555,6 +2555,38 @@
    background-color: #df691a;
    border-color: #df691a;
  }
+
+ .btn-empty {
+    color: #fff;
+    background-color: #1ca2f0;
+    border-color: #ffffff;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .btn-hit {
+    color: #fff;
+    background-color: #d6250e;
+    border-color: #ffffff;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .btn-ship {
+    color: #fff;
+    background-color: #000000;
+    border-color: #ffffff;
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .btn-miss {
+    color: #fff;
+    background-color: #757474;
+    border-color: #ffffff;
+    width: 2rem;
+    height: 2rem;
+  }
  
  .btn-primary:hover {
    color: #fff;
