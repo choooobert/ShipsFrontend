@@ -6,13 +6,15 @@ import { HomeComponent } from './home/home.component';
 import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
 import { GameComponent } from './game/game.component';
 import { AppRoutingModule } from './app-routing.module';
+import { LandingComponent } from './landing/landing.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     WaitingRoomComponent,
-    GameComponent
+    GameComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule,
