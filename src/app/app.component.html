@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ships: The Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body class="">
+
+    <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/home">Ships: The Game</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav mr-auto">
+                   <li class="nav-item active">
+                    <a class="nav-link">Your name here</a>
+                  </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">
+                        <img src="https://www.flaticon.com/svg/static/icons/svg/197/197374.svg" alt="English" width="20" height="20">
+                      </a>
+                    </li>
+                    <li>
+                      <a class="nav-link" href="#">
+                        <img src="https://www.flaticon.com/svg/static/icons/svg/197/197529.svg" alt="Polski" width="20" height="20">
+                      </a>
+                    </li>
+                  </ul>
+                </form>
+              </div>
+        </div>
+    </div>
+    
+    <div class="container">
+      <div class="jumbotron">
+        <h1 class="display-5">Ahoy Seadogs!</h1>
+        <!-- For development purposes only: -->
+        <nav>
+          <p>Menu (development purpose only): 
+            <a routerLink="/home">Home </a>
+            <a routerLink="/waiting-room">Room </a>
+            <a routerLink="/game">Game </a>
+          </p>
+        </nav>
+      <!--  -->
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+
+  </body>
+
+</html>
