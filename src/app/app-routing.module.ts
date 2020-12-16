@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'landing', component: LandingComponent},
   { path: 'home', component: HomeComponent },
   { path: 'waiting-room', component: WaitingRoomComponent },
-  { path: 'game', component: GameComponent},
+  { path: 'game/:id', component: GameComponent},
 ];
 
 @NgModule({

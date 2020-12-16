@@ -238,8 +238,15 @@
     </div>
 
     <div class="col-lg-4">
-        <div class="bs-component" style="background-color: darkgreen;">
-            <div class="card" style="text-align: center; background-color: darkgrey;">
+        <div class="bs-component">
+          <div *ngIf="player" class="card" style="text-align: center; padding-top: 1rem; background-color: darkgrey;">
+            <h5 class="card-title">Player info</h5>
+            <div class="card-body">
+              Player {{player.id}}: {{player.name}}
+            </div>
+          </div>
+
+          <div class="card" style="text-align: center; background-color: darkgrey;">
                 <h4 class="card-title">Game info</h4>
                 <div class="card-body">
 
