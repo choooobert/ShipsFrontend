@@ -3,9 +3,9 @@ name: CI
 
 on:
   push:
-    branches: [ Hubert, master ]
+    branches: [ master ]
   pull_request:
-    branches: [ Hubert, master ]
+    branches: [ master ]
 
   workflow_dispatch:
 
