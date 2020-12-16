@@ -5,10 +5,10 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-ci": "ng build --prod --base-Href=\"https://Kamil-Jankowski.github.io/ShipsFrontend/\" ",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e", 
-    "build-deploy": "ng build --prod --base-Href=\"https://Kamil-Jankowski.github.io/ShipsFrontend/\" "
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
