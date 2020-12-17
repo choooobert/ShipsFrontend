@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
 import { IpServiceService } from '../ip-service.service';  
 
 import { PlayerService } from '../player.service';
@@ -16,11 +17,13 @@ export class HomeComponent implements OnInit {
   ipAddress:string;  
   error_message:string;
 
-  constructor(private playerService: PlayerService, private ip:IpServiceService) { }
+  constructor(private playerService: PlayerService, private ip:IpServiceService, 
+    private router: Router) { }
 
   ngOnInit() {
     this.getPlayers();
-    this.getIP();  
+    this.getIP();
+    this.error_message = ""; 
     }
 
   getIP(){  
@@ -40,7 +43,12 @@ export class HomeComponent implements OnInit {
     let id = this.players.length+1;
     if (!name) { return; }
     this.playerService.addPlayer({name, ip, id} as Player)
-                      .subscribe(player => {this.players.push(player);});
+      .subscribe(
+        player => {this.players.push(player);
+        }, 
+        error => { console.log(error); this.error_message = error;},
+        () => {
+          this.router.navigate(['/waiting-room'])});
   }
 
 }

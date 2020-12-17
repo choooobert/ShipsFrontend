@@ -19,7 +19,7 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">Player name</label>
                         <input #playerName type="name" class="form-control" id="name" placeholder="Enter your name">
-                        <small id="emailHelp" class="form-text text-muted">This is your in-game identifier</small>
+                        <small id="emailHelp" class="form-text text-muted">{{this.error_message}}</small>
                     </div>
                 </fieldset>
             </form>
@@ -28,7 +28,7 @@
     <div class="col-lg-4 offset-lg-1" style="padding-top: 2rem;">
         <p class="bs-component">
             <a>
-                <button (click)="add(playerName.value)" type="button" class="btn btn-primary btn-lg btn-block" routerLink="/waiting-room">Join the game</button>
+                <button (click)="add(playerName.value)" type="button" class="btn btn-primary btn-lg btn-block">Join the game</button>
             </a> 
         </p>
     </div>

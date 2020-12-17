@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders,HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
+
   
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
   
 import { Player } from './player';
 
@@ -22,21 +23,20 @@ export class PlayerService {
   /** GET players from the server */
   getPlayers(): Observable<Player[]> {
     return this.http.get<Player[]>(this.playersUrl)
-                     .pipe(catchError(this.handleError<Player[]>('getPlayers', []))
-       );
+    .pipe(catchError(this.handleError));
   }
 
   /** GET player by id. Will 404 if id not found */
   getPlayer(id: number): Observable<Player> {
     const url = `${this.playersUrl}/${id}`;
     return this.http.get<Player>(url)
-                     .pipe(catchError(this.handleError<Player>(`getPlayer id=${id}`)));
+    .pipe(catchError(this.handleError));
   }
 
   /** POST: add a new player to the server */
   addPlayer(player: Player): Observable<Player> {
     return this.http.post<Player>(this.playersUrl, player, this.httpOptions)
-                      .pipe(catchError(this.handleError<Player>('addPlayer')));
+    .pipe(catchError(this.handleError));
   }
   
   /** DELETE: delete the hero from the server */
@@ -45,7 +45,7 @@ export class PlayerService {
     const url = `${this.playersUrl}/${id}`;
 
     return this.http.delete<Player>(url, this.httpOptions)
-                    .pipe(catchError(this.handleError<Player>('deleteHero')));
+    .pipe(catchError(this.handleError));
   }
 
   /**
@@ -54,14 +54,7 @@ export class PlayerService {
   * @param operation - name of the operation that failed
   * @param result - optional value to return as the observable result
   */
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
+ private handleError(error: HttpErrorResponse) {
+  return throwError(error.error);
+}
 }
