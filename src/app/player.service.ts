@@ -26,13 +26,13 @@ export class PlayerService {
     .pipe(catchError(this.handleError));
   }
 
-  /** GET player by id. Will 404 if id not found */
-  getPlayer(id: number): Observable<Player> {
-    const url = `${this.playersUrl}/${id}`;
-    return this.http.get<Player>(url)
-    .pipe(catchError(this.handleError));
-  }
-
+    /** GET player by id. Will 404 if id not found */
+    getPlayer(id: number): Observable<Player> {
+      const url = `${this.playersUrl}/${id}`;
+      return this.http.get<Player>(url)
+      .pipe(catchError(this.handleError));
+    }
+  
   /** POST: add a new player to the server */
   addPlayer(player: Player): Observable<Player> {
     return this.http.post<Player>(this.playersUrl, player, this.httpOptions)
@@ -47,14 +47,7 @@ export class PlayerService {
     return this.http.delete<Player>(url, this.httpOptions)
     .pipe(catchError(this.handleError));
   }
-
-  /**
-  * Handle Http operation that failed.
-  * Let the app continue.
-  * @param operation - name of the operation that failed
-  * @param result - optional value to return as the observable result
-  */
- private handleError(error: HttpErrorResponse) {
-  return throwError(error.error);
-}
+  private handleError(error: HttpErrorResponse) {
+    return throwError(error.error);
+  }
 }
