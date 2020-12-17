@@ -10,32 +10,33 @@ import { Player } from './player';
   providedIn: 'root'
 })
 export class PlayerService {
-  private playersUrl = 'api/players';  // URL to web api
+  private playersUrl = 'http://localhost:8080/room';  // URL to web api
   
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+   httpOptions = {
+     headers: new HttpHeaders({ 'Content-Type': 'application/json', 
+     "charset": "UTF-8"})
+   };
   
   constructor(private http: HttpClient) { }
   
   /** GET players from the server */
   getPlayers(): Observable<Player[]> {
     return this.http.get<Player[]>(this.playersUrl)
-                    .pipe(catchError(this.handleError<Player[]>('getPlayers', []))
-      );
+                     .pipe(catchError(this.handleError<Player[]>('getPlayers', []))
+       );
   }
 
   /** GET player by id. Will 404 if id not found */
   getPlayer(id: number): Observable<Player> {
     const url = `${this.playersUrl}/${id}`;
     return this.http.get<Player>(url)
-                    .pipe(catchError(this.handleError<Player>(`getPlayer id=${id}`)));
+                     .pipe(catchError(this.handleError<Player>(`getPlayer id=${id}`)));
   }
 
   /** POST: add a new player to the server */
   addPlayer(player: Player): Observable<Player> {
     return this.http.post<Player>(this.playersUrl, player, this.httpOptions)
-                    .pipe(catchError(this.handleError<Player>('addPlayer')));
+                      .pipe(catchError(this.handleError<Player>('addPlayer')));
   }
   
   /** DELETE: delete the hero from the server */
