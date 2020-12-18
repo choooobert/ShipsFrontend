@@ -11,7 +11,7 @@ import { Player } from './player';
   providedIn: 'root'
 })
 export class PlayerService {
-  private playersUrl = 'http://localhost:8080/room';  // URL to web api
+  private playersUrl = 'https://ships-room-service-backend.herokuapp.com/room';  // URL to web api
   
    httpOptions = {
      headers: new HttpHeaders({ 'Content-Type': 'application/json', 
