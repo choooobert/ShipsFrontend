@@ -18,7 +18,7 @@ export class GridComponent implements OnInit {
 
   changeStatus(id: number): number {
     console.log("Changing cell status");
-    console.log("Before: ", this.buttons[id+1].status);
+    console.log("Before: ", this.buttons[id-1].status);
     if(this.buttons[id-1].taken) {
       this.buttons[id-1].status = 1;
       this.messageService.add(`Hit !`);
