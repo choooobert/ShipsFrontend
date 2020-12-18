@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BUTTONS } from '../mock-button';
-
+import { MessageService } from '../messages.service';
 
 @Component({
   selector: 'app-grid',
@@ -11,19 +11,9 @@ export class GridComponent implements OnInit {
   
   buttons = BUTTONS;
 
-  constructor() { }
+  constructor(public messageService: MessageService,) { }
 
   ngOnInit(): void {
-  }
-
-  onClick(id: number): boolean {
-    if (id % 2 == 0) {
-      console.log("Hit: ", true);
-      return true;
-    } else {
-      console.log("Hit: ", false);
-      return false;
-    }
   }
 
   changeStatus(id: number): number {
@@ -31,8 +21,10 @@ export class GridComponent implements OnInit {
     console.log("Before: ", this.buttons[id+1].status);
     if(this.buttons[id-1].taken) {
       this.buttons[id-1].status = 1;
+      this.messageService.add(`Hit !`);
     } else {
       this.buttons[id-1].status = 2;
+      this.messageService.add(`Miss !`);
     }
     console.log("After: ", this.buttons[id-1].status);
     return id; 

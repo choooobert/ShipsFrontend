@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LandingComponent } from './landing/landing.component';
 import { GridComponent } from './grid/grid.component';
 import { MapComponent } from './map/map.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { MapComponent } from './map/map.component';
     GameComponent,
     LandingComponent,
     GridComponent,
-    MapComponent
+    MapComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,
