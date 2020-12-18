@@ -56,3 +56,10 @@ Run:
 ----
 npm install
 ----
+
+* To use the functionalities used in the project run:
+[source: bash]
+----
+npm install --save @angular/material @angular/cdk
+npm install --save @angular/animations
+----
