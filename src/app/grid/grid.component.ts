@@ -26,12 +26,15 @@ export class GridComponent implements OnInit {
     }
   }
 
-  enableDisableRule(): void{
-    console.log("Enable/disable inside grid component");
-  }
-
-  getStatus(id: number): number{
-    console.log("Getting cell status");
+  changeStatus(id: number): number {
+    console.log("Changing cell status");
+    console.log("Before: ", this.buttons[id+1].status);
+    if(this.buttons[id-1].taken) {
+      this.buttons[id-1].status = 1;
+    } else {
+      this.buttons[id-1].status = 2;
+    }
+    console.log("After: ", this.buttons[id-1].status);
     return id; 
   }
 
