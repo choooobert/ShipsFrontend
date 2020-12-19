@@ -11,7 +11,7 @@ import { Player } from './player';
   providedIn: 'root'
 })
 export class PlayerService {
-  private playersUrl = 'https://ships-room-service-backend.herokuapp.com/room';  // URL to web api
+  private playersUrl = 'https://ships-room-service-backend-dev.herokuapp.com/room';  // URL to web api
   
    httpOptions = {
      headers: new HttpHeaders({ 'Content-Type': 'application/json', 
@@ -39,7 +39,7 @@ export class PlayerService {
     .pipe(catchError(this.handleError));
   }
   
-  /** DELETE: delete the hero from the server */
+  /** DELETE: delete the player from the server */
   deleteHero(player: Player | number): Observable<Player> {
     const id = typeof player === 'number' ? player : player.id;
     const url = `${this.playersUrl}/${id}`;
@@ -47,6 +47,15 @@ export class PlayerService {
     return this.http.delete<Player>(url, this.httpOptions)
     .pipe(catchError(this.handleError));
   }
+
+    /** DELETE: delete all the players from the server */
+    deleteAllPlayers(): Observable<Player[]> {
+      const url = `${this.playersUrl}/all`;
+      return this.http.delete<Player[]>(url, this.httpOptions)
+          .pipe(catchError(this.handleError));
+    }
+
+
   private handleError(error: HttpErrorResponse) {
     return throwError(error.error);
   }

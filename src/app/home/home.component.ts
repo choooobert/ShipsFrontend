@@ -32,13 +32,32 @@ export class HomeComponent implements OnInit {
     name = name.trim();
     let id = this.players.length+1;
     if (!name) { return; }
-    this.playerService.addPlayer({name} as Player)
+    this.playerService.addPlayer({name, id} as Player)
       .subscribe(
         player => {this.players.push(player);
         }, 
-        error => { console.log(error); this.error_message = error;},
+        error => { 
+          console.log(error); 
+          this.error_message = error;},
         () => {
-          this.router.navigate(['/waiting-room'])});
+          if(this.players.length === 2){
+            let game_url  = '/game/' + id;
+            this.router.navigate([game_url]);
+          } else{
+            this.router.navigate(['/waiting-room']);
+          }
+        });
   }
 
+  delete(): void {
+    this.playerService.deleteAllPlayers()
+      .subscribe(
+        player => {this.players = [];}, 
+        error => { 
+          console.log(error); 
+          this.error_message = error;},
+        () => {
+          this.router.navigate(['/waiting-room']);
+        });
+  }
 }
