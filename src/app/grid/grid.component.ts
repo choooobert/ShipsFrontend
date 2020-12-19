@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { BUTTONS } from '../mock-button';
 import { MessageService } from '../messages.service';
+import { ShootMapService } from '../shoot-map.service';
+import { Button } from '../button';
 
 @Component({
   selector: 'app-grid',
@@ -9,11 +10,17 @@ import { MessageService } from '../messages.service';
 })
 export class GridComponent implements OnInit {
   
-  buttons = BUTTONS;
+  buttons: Button[];
 
-  constructor(public messageService: MessageService,) { }
+  constructor(public messageService: MessageService, private shootMapService: ShootMapService) { }
 
   ngOnInit(): void {
+    this.getGrid();
+  }
+
+  getGrid(): void {
+    this.shootMapService.getGrid()
+    .subscribe(buttons => this.buttons = buttons);
   }
 
   changeStatus(id: number): number {

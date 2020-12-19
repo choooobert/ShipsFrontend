@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FIELDS } from '../mock-map';
-
+import { Button } from '../button';
+import { MapService } from '../map.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-map',
@@ -9,11 +10,17 @@ import { FIELDS } from '../mock-map';
 })
 export class MapComponent implements OnInit {
   
-  buttons = FIELDS;
+  buttons: Button[];
 
-  constructor() { }
+  constructor(private mapService: MapService) { }
 
   ngOnInit(): void {
+    this.getGrid();
+  }
+
+  getGrid(): void {
+    this.mapService.getGrid()
+    .subscribe(buttons => this.buttons = buttons);;
   }
 
   onClick(id: number): boolean {
@@ -24,10 +31,6 @@ export class MapComponent implements OnInit {
       console.log("Hit: ", false);
       return false;
     }
-  }
-
-  enableDisableRule(): void{
-    console.log("Enable/disable inside grid component");
   }
 
   getStatus(id: number): number{
