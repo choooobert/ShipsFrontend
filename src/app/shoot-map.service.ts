@@ -18,7 +18,7 @@ export class ShootMapService {
 
   constructor(public messageService: MessageService, private http: HttpClient) { }
 
-  /** GET player map with ships from the server */
+  /** GET enemy map with ships from the server */
   getGrid(): Observable<Button[]> {
     return this.http.get<Button[]>(this.shootMapUrl)
                     .pipe(
@@ -27,6 +27,22 @@ export class ShootMapService {
                       );
   }
 
+  /** GET button by id. Will 404 if id not found */
+  getButton(id: number): Observable<Button> {
+    const url = `${this.shootMapUrl}/${id}`;
+    return this.http.get<Button>(url)
+                    .pipe(tap(_ => this.log(`downloaded button id=${id}`)),
+                    catchError(this.handleError<Button>(`getHero id=${id}`))
+    );
+  }
+
+  /** PUT: update the button on the server */
+  updateButton(button: Button): Observable<any> {
+    return this.http.put(this.shootMapUrl, button, this.httpOptions)
+                    .pipe(tap(_ => this.log(`updated button id=${button.id} on the server`)),
+                    catchError(this.handleError<any>('updateHero'))
+    );
+  }
   /**
   * Handle Http operation that failed.
   * Let the app continue.

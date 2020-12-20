@@ -17,6 +17,7 @@ import { LandingComponent } from './landing/landing.component';
 import { GridComponent } from './grid/grid.component';
 import { MapComponent } from './map/map.component';
 import { MessagesComponent } from './messages/messages.component';
+import { ButtonDetailsComponent } from './button-details/button-details.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { MessagesComponent } from './messages/messages.component';
     LandingComponent,
     GridComponent,
     MapComponent,
-    MessagesComponent
+    MessagesComponent,
+    ButtonDetailsComponent
   ],
   imports: [
     BrowserModule,

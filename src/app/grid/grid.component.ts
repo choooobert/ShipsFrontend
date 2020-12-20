@@ -12,7 +12,10 @@ export class GridComponent implements OnInit {
   
   buttons: Button[];
 
-  constructor(public messageService: MessageService, private shootMapService: ShootMapService) { }
+  constructor(
+    public messageService: MessageService,
+    private shootMapService: ShootMapService,
+    ) { }
 
   ngOnInit(): void {
     this.getGrid();
@@ -23,18 +26,25 @@ export class GridComponent implements OnInit {
     .subscribe(buttons => this.buttons = buttons);
   }
 
-  changeStatus(id: number): number {
+  changeStatus(id: number): void {
     console.log("Changing cell status");
-    console.log("Before: ", this.buttons[id-1].status);
-    if(this.buttons[id-1].taken) {
-      this.buttons[id-1].status = 1;
+    const currentButton = this.buttons[id - 1];
+    console.log("Before: ", currentButton.status);
+    if(currentButton.taken) {
+      currentButton.status = 1;
       this.messageService.add(`Hit !`);
     } else {
-      this.buttons[id-1].status = 2;
+      currentButton.status = 2;
       this.messageService.add(`Miss !`);
     }
+    this.updateButtonStatus(currentButton);
+    this.getGrid();
     console.log("After: ", this.buttons[id-1].status);
-    return id; 
+  }
+
+  updateButtonStatus(button: Button) {
+    this.shootMapService.updateButton(button)
+    .subscribe();
   }
 
 }

@@ -29,6 +29,23 @@ export class MapService {
                       );
   }
 
+  /** GET button by id. Will 404 if id not found */
+  getButton(id: number): Observable<Button> {
+    const url = `${this.mapUrl}/${id}`;
+    return this.http.get<Button>(url)
+                    .pipe(tap(_ => this.log(`downloaded button id=${id}`)),
+                    catchError(this.handleError<Button>(`getHero id=${id}`))
+    );
+  }
+
+  /** PUT: update the button on the server */
+  updateButton(button: Button): Observable<any> {
+    return this.http.put(this.mapUrl, button, this.httpOptions)
+                    .pipe(tap(_ => this.log(`updated button id=${button.id}`)),
+                    catchError(this.handleError<any>('updateHero'))
+    );
+  }
+
   /**
   * Handle Http operation that failed.
   * Let the app continue.
