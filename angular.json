@@ -116,9 +116,16 @@
               "devServerTarget": "ShipsFrontend:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
     }
   },
-  "defaultProject": "ShipsFrontend"
+  "defaultProject": "ShipsFrontend",
+  "cli": {
+    "analytics": false
+  }
 }
