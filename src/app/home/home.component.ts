@@ -30,9 +30,8 @@ export class HomeComponent implements OnInit {
 
   add(name: string): void {
     name = name.trim();
-    let id = this.players.length+1;
     if (!name) { return; }
-    this.playerService.addPlayer({name, id} as Player)
+    this.playerService.addPlayer({name} as Player)
       .subscribe(
         player => {this.players.push(player);
         }, 
@@ -41,7 +40,7 @@ export class HomeComponent implements OnInit {
           this.error_message = error;},
         () => {
           if(this.players.length === 2){
-            let game_url  = '/game/' + id;
+            let game_url  = '/game/' + name;
             this.router.navigate([game_url]);
           } else{
             this.router.navigate(['/waiting-room']);

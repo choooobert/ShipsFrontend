@@ -11,7 +11,7 @@ import { Player } from './player';
   providedIn: 'root'
 })
 export class PlayerService {
-  private playersUrl = 'https://ships-room-service-backend-dev.herokuapp.com/room';  // URL to web api
+  private playersUrl = 'http://localhost:8080/room';  // URL to web api
   
    httpOptions = {
      headers: new HttpHeaders({ 'Content-Type': 'application/json', 
@@ -26,9 +26,9 @@ export class PlayerService {
     .pipe(catchError(this.handleError));
   }
 
-    /** GET player by id. Will 404 if id not found */
-    getPlayer(id: number): Observable<Player> {
-      const url = `${this.playersUrl}/${id}`;
+    /** GET player by name. Will 404 if name not found */
+    getPlayer(name: string): Observable<Player> {
+      const url = `${this.playersUrl}/${name}`;
       return this.http.get<Player>(url)
       .pipe(catchError(this.handleError));
     }
@@ -40,9 +40,9 @@ export class PlayerService {
   }
   
   /** DELETE: delete the player from the server */
-  deleteHero(player: Player | number): Observable<Player> {
-    const id = typeof player === 'number' ? player : player.id;
-    const url = `${this.playersUrl}/${id}`;
+  deleteHero(player: Player | string): Observable<Player> {
+    const name : string= typeof player === 'string' ? player : player.name;
+    const url = `${this.playersUrl}/${name}`;
 
     return this.http.delete<Player>(url, this.httpOptions)
     .pipe(catchError(this.handleError));
@@ -50,7 +50,7 @@ export class PlayerService {
 
     /** DELETE: delete all the players from the server */
     deleteAllPlayers(): Observable<Player[]> {
-      const url = `${this.playersUrl}/all`;
+      const url = `${this.playersUrl}`;
       return this.http.delete<Player[]>(url, this.httpOptions)
           .pipe(catchError(this.handleError));
     }
