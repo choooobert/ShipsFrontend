@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../messages.service';
 import { ShootMapService } from '../shoot-map.service';
-import { Button } from '../button';
+import { Square } from '../square';
 
 @Component({
   selector: 'app-grid',
@@ -10,7 +10,7 @@ import { Button } from '../button';
 })
 export class GridComponent implements OnInit {
   
-  buttons: Button[];
+  buttons: Square[];
 
   constructor(
     public messageService: MessageService,
@@ -42,7 +42,7 @@ export class GridComponent implements OnInit {
     console.log("After: ", this.buttons[id-1].status);
   }
 
-  updateButtonStatus(button: Button) {
+  updateButtonStatus(button: Square) {
     this.shootMapService.updateButton(button)
     .subscribe();
   }

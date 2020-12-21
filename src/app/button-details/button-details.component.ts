@@ -1,8 +1,4 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
-import { MapService } from '../map.service';
-import { Button } from '../button';
 
 @Component({
   selector: 'app-button-details',

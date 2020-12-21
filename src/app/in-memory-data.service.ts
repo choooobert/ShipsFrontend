@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
-import { Button } from './button';
+import { Square } from './square';
 import { Player } from './player';
 
 @Injectable({
@@ -10,7 +10,7 @@ export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const players = [];
 
-    const FIELDS: Button[] = [
+    const FIELDS: Square[] = [
       { id: 1, status: 3, taken: true},
       { id: 2, status: 0, taken: false},
       { id: 3, status: 0, taken: false},
@@ -113,7 +113,7 @@ export class InMemoryDataService implements InMemoryDbService {
       { id: 100, status: 3, taken: true},
     ];
 
-    const BUTTONS: Button[] = [
+    const BUTTONS: Square[] = [
       { id: 1, status: 3, taken: true},
       { id: 2, status: 0, taken: false},
       { id: 3, status: 0, taken: false},

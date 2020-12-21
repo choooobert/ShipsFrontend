@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Button } from '../button';
+import { Square } from '../square';
 import { MapService } from '../map.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { MapService } from '../map.service';
 })
 export class MapComponent implements OnInit {
   
-  buttons: Button[];
+  buttons: Square[];
 
   constructor(private mapService: MapService) { }
 

@@ -4,7 +4,7 @@ import { MessageService } from './messages.service';
 import { catchError, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
-import { Button } from './button';
+import { Square } from './square';
 
 @Injectable({
   providedIn: 'root'
@@ -19,25 +19,25 @@ export class ShootMapService {
   constructor(public messageService: MessageService, private http: HttpClient) { }
 
   /** GET enemy map with ships from the server */
-  getGrid(): Observable<Button[]> {
-    return this.http.get<Button[]>(this.shootMapUrl)
+  getGrid(): Observable<Square[]> {
+    return this.http.get<Square[]>(this.shootMapUrl)
                     .pipe(
                       tap(_ => this.log('map updated')),
-                      catchError(this.handleError<Button[]>('getGrid', []))
+                      catchError(this.handleError<Square[]>('getGrid', []))
                       );
   }
 
   /** GET button by id. Will 404 if id not found */
-  getButton(id: number): Observable<Button> {
+  getButton(id: number): Observable<Square> {
     const url = `${this.shootMapUrl}/${id}`;
-    return this.http.get<Button>(url)
+    return this.http.get<Square>(url)
                     .pipe(tap(_ => this.log(`downloaded button id=${id}`)),
-                    catchError(this.handleError<Button>(`getHero id=${id}`))
+                    catchError(this.handleError<Square>(`getHero id=${id}`))
     );
   }
 
   /** PUT: update the button on the server */
-  updateButton(button: Button): Observable<any> {
+  updateButton(button: Square): Observable<any> {
     return this.http.put(this.shootMapUrl, button, this.httpOptions)
                     .pipe(tap(_ => this.log(`updated button id=${button.id} on the server`)),
                     catchError(this.handleError<any>('updateHero'))
