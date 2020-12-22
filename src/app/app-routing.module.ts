@@ -6,6 +6,10 @@ import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
 import { GameComponent } from './game/game.component';
 import { LandingComponent } from './landing/landing.component';
 
+/**
+ * Router configuration mapping urls to angular components;
+ * Routing to be changed: default will redirect to home
+ */
 const routes: Routes = [
   { path: '', redirectTo: '/landing', pathMatch: 'full' },
   { path: 'landing', component: LandingComponent},

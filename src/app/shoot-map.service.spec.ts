@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MessageService } from './messages.service';
+import { ShootMapService } from './shoot-map.service';
 
-describe('MessagesService', () => {
-  let service: MessageService;
+describe('ShootMapService', () => {
+  let service: ShootMapService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(MessageService);
+    service = TestBed.inject(ShootMapService);
   });
 
   it('should be created', () => {

@@ -1,21 +1,249 @@
 import { Injectable } from '@angular/core';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
+import { Square } from './square';
 import { Player } from './player';
 
+/**
+ * Data service used for testing purposes;
+ * To be removed when back-end urls are provided.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class InMemoryDataService implements InMemoryDbService {
+  /**
+   * Creates mock databases to be used insted of actual http responses
+   * 
+   * @return defined database arrays of players and squares
+   */
   createDb() {
     const players = [];
-    return {players};
+
+    /**
+     * Map of squares used by ship-map
+     */
+    const SHIPS: Square[] = [
+      { id: 1, status: 3, taken: true},
+      { id: 2, status: 0, taken: false},
+      { id: 3, status: 0, taken: false},
+      { id: 4, status: 0, taken: false},
+      { id: 5, status: 0, taken: false},
+      { id: 6, status: 0, taken: false},
+      { id: 7, status: 0, taken: false},
+      { id: 8, status: 0, taken: false},
+      { id: 9, status: 0, taken: false},
+      { id: 10, status: 3, taken: true},
+      { id: 11, status: 0, taken: false},
+      { id: 12, status: 0, taken: false},
+      { id: 13, status: 0, taken: false},
+      { id: 14, status: 0, taken: false},
+      { id: 15, status: 3, taken: true},
+      { id: 16, status: 3, taken: true},
+      { id: 17, status: 3, taken: true},
+      { id: 18, status: 3, taken: true},
+      { id: 19, status: 0, taken: false},
+      { id: 20, status: 0, taken: false},
+      { id: 21, status: 0, taken: false},
+      { id: 22, status: 0, taken: false},
+      { id: 23, status: 0, taken: false},
+      { id: 24, status: 0, taken: false},
+      { id: 25, status: 0, taken: false},
+      { id: 26, status: 0, taken: false},
+      { id: 27, status: 0, taken: false},
+      { id: 28, status: 0, taken: false},
+      { id: 29, status: 0, taken: false},
+      { id: 30, status: 0, taken: false},
+      { id: 31, status: 0, taken: false},
+      { id: 32, status: 0, taken: false},
+      { id: 33, status: 0, taken: false},
+      { id: 34, status: 0, taken: false},
+      { id: 35, status: 0, taken: false},
+      { id: 36, status: 3, taken: true},
+      { id: 37, status: 3, taken: true},
+      { id: 38, status: 0, taken: false},
+      { id: 39, status: 0, taken: false},
+      { id: 40, status: 0, taken: false},
+      { id: 41, status: 0, taken: false},
+      { id: 42, status: 3, taken: true},
+      { id: 43, status: 0, taken: false},
+      { id: 44, status: 0, taken: false},
+      { id: 45, status: 0, taken: false},
+      { id: 46, status: 0, taken: false},
+      { id: 47, status: 0, taken: false},
+      { id: 48, status: 0, taken: false},
+      { id: 49, status: 0, taken: false},
+      { id: 50, status: 0, taken: false},
+      { id: 51, status: 0, taken: false},
+      { id: 52, status: 3, taken: true},
+      { id: 53, status: 0, taken: false},
+      { id: 54, status: 3, taken: true},
+      { id: 55, status: 3, taken: true},
+      { id: 56, status: 3, taken: true},
+      { id: 57, status: 0, taken: false},
+      { id: 58, status: 0, taken: false},
+      { id: 59, status: 0, taken: false},
+      { id: 60, status: 3, taken: true},
+      { id: 61, status: 0, taken: false},
+      { id: 62, status: 3, taken: true},
+      { id: 63, status: 0, taken: false},
+      { id: 64, status: 0, taken: false},
+      { id: 65, status: 0, taken: false},
+      { id: 66, status: 0, taken: false},
+      { id: 67, status: 0, taken: false},
+      { id: 68, status: 0, taken: false},
+      { id: 69, status: 0, taken: false},
+      { id: 70, status: 3, taken: true},
+      { id: 71, status: 0, taken: false},
+      { id: 72, status: 0, taken: false},
+      { id: 73, status: 0, taken: false},
+      { id: 74, status: 0, taken: false},
+      { id: 75, status: 0, taken: false},
+      { id: 76, status: 0, taken: false},
+      { id: 77, status: 3, taken: true},
+      { id: 78, status: 0, taken: false},
+      { id: 79, status: 0, taken: false},
+      { id: 80, status: 0, taken: false},
+      { id: 81, status: 0, taken: false},
+      { id: 82, status: 0, taken: false},
+      { id: 83, status: 0, taken: false},
+      { id: 84, status: 0, taken: false},
+      { id: 85, status: 0, taken: false},
+      { id: 86, status: 0, taken: false},
+      { id: 87, status: 3, taken: true},
+      { id: 88, status: 0, taken: false},
+      { id: 89, status: 0, taken: false},
+      { id: 60, status: 0, taken: false},
+      { id: 91, status: 3, taken: true},
+      { id: 92, status: 0, taken: false},
+      { id: 93, status: 0, taken: false},
+      { id: 94, status: 0, taken: false},
+      { id: 95, status: 0, taken: false},
+      { id: 96, status: 0, taken: false},
+      { id: 97, status: 0, taken: false},
+      { id: 98, status: 0, taken: false},
+      { id: 99, status: 0, taken: false},
+      { id: 100, status: 3, taken: true},
+    ];
+
+    /**
+     * Map of squares used by shoot-map
+     */
+    const SHOTS: Square[] = [
+      { id: 1, status: 3, taken: true},
+      { id: 2, status: 0, taken: false},
+      { id: 3, status: 0, taken: false},
+      { id: 4, status: 0, taken: false},
+      { id: 5, status: 0, taken: false},
+      { id: 6, status: 0, taken: false},
+      { id: 7, status: 0, taken: false},
+      { id: 8, status: 0, taken: false},
+      { id: 9, status: 0, taken: false},
+      { id: 10, status: 3, taken: true},
+      { id: 11, status: 0, taken: false},
+      { id: 12, status: 0, taken: false},
+      { id: 13, status: 0, taken: false},
+      { id: 14, status: 0, taken: false},
+      { id: 15, status: 3, taken: true},
+      { id: 16, status: 3, taken: true},
+      { id: 17, status: 3, taken: true},
+      { id: 18, status: 3, taken: true},
+      { id: 19, status: 0, taken: false},
+      { id: 20, status: 0, taken: false},
+      { id: 21, status: 0, taken: false},
+      { id: 22, status: 0, taken: false},
+      { id: 23, status: 0, taken: false},
+      { id: 24, status: 0, taken: false},
+      { id: 25, status: 0, taken: false},
+      { id: 26, status: 0, taken: false},
+      { id: 27, status: 0, taken: false},
+      { id: 28, status: 0, taken: false},
+      { id: 29, status: 0, taken: false},
+      { id: 30, status: 0, taken: false},
+      { id: 31, status: 0, taken: false},
+      { id: 32, status: 0, taken: false},
+      { id: 33, status: 0, taken: false},
+      { id: 34, status: 0, taken: false},
+      { id: 35, status: 0, taken: false},
+      { id: 36, status: 3, taken: true},
+      { id: 37, status: 3, taken: true},
+      { id: 38, status: 0, taken: false},
+      { id: 39, status: 0, taken: false},
+      { id: 40, status: 0, taken: false},
+      { id: 41, status: 0, taken: false},
+      { id: 42, status: 3, taken: true},
+      { id: 43, status: 0, taken: false},
+      { id: 44, status: 0, taken: false},
+      { id: 45, status: 0, taken: false},
+      { id: 46, status: 0, taken: false},
+      { id: 47, status: 0, taken: false},
+      { id: 48, status: 0, taken: false},
+      { id: 49, status: 0, taken: false},
+      { id: 50, status: 0, taken: false},
+      { id: 51, status: 0, taken: false},
+      { id: 52, status: 3, taken: true},
+      { id: 53, status: 0, taken: false},
+      { id: 54, status: 3, taken: true},
+      { id: 55, status: 3, taken: true},
+      { id: 56, status: 3, taken: true},
+      { id: 57, status: 0, taken: false},
+      { id: 58, status: 0, taken: false},
+      { id: 59, status: 0, taken: false},
+      { id: 60, status: 3, taken: true},
+      { id: 61, status: 0, taken: false},
+      { id: 62, status: 3, taken: true},
+      { id: 63, status: 0, taken: false},
+      { id: 64, status: 0, taken: false},
+      { id: 65, status: 0, taken: false},
+      { id: 66, status: 0, taken: false},
+      { id: 67, status: 0, taken: false},
+      { id: 68, status: 0, taken: false},
+      { id: 69, status: 0, taken: false},
+      { id: 70, status: 3, taken: true},
+      { id: 71, status: 0, taken: false},
+      { id: 72, status: 0, taken: false},
+      { id: 73, status: 0, taken: false},
+      { id: 74, status: 0, taken: false},
+      { id: 75, status: 0, taken: false},
+      { id: 76, status: 0, taken: false},
+      { id: 77, status: 3, taken: true},
+      { id: 78, status: 0, taken: false},
+      { id: 79, status: 0, taken: false},
+      { id: 80, status: 0, taken: false},
+      { id: 81, status: 0, taken: false},
+      { id: 82, status: 0, taken: false},
+      { id: 83, status: 0, taken: false},
+      { id: 84, status: 0, taken: false},
+      { id: 85, status: 0, taken: false},
+      { id: 86, status: 0, taken: false},
+      { id: 87, status: 3, taken: true},
+      { id: 88, status: 0, taken: false},
+      { id: 89, status: 0, taken: false},
+      { id: 60, status: 0, taken: false},
+      { id: 91, status: 3, taken: true},
+      { id: 92, status: 0, taken: false},
+      { id: 93, status: 0, taken: false},
+      { id: 94, status: 0, taken: false},
+      { id: 95, status: 0, taken: false},
+      { id: 96, status: 0, taken: false},
+      { id: 97, status: 0, taken: false},
+      { id: 98, status: 0, taken: false},
+      { id: 99, status: 0, taken: false},
+      { id: 100, status: 3, taken: true},
+    ];
+
+
+    return {players, SHIPS, SHOTS};
   }
 
-  // Overrides the genId method to ensure that a player always has an id.
-  // If the players array is empty,
-  // the method below returns the initial number (1).
-  // if the players array is not empty, the method below returns the highest
-  // player id + 1.
+  /**
+   * Overrides the genId method to ensure that a player always has an id.
+   * If the players array is empty,
+   * the method below returns the initial number (1).
+   * if the players array is not empty, the method below returns the highest
+   * player id + 1.
+   * TO BE REMOVED after players definition change.
+   * @param players - arrays of players to be checked for existing id
+   */
   genId(players: Player[]): number {
     return players.length > 0 ? Math.max(...players.map(player => player.id)) + 1 : 1;
   }
