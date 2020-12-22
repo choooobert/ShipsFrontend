@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { NotificationType } from './notification.message';
+import { NotificationService } from './notification.service';
 
 /**
  * Main view of the app;
@@ -10,6 +13,18 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent{
+export class AppComponent implements OnInit{
   title = 'Ships: The Game';
+
+  constructor(
+    private toastr: ToastrService,
+    private notificationService: NotificationService
+    ){}
+
+  /**
+   * Test purpose only - REMOVE
+   */
+  ngOnInit(): void {
+  }
+  
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { MessageService } from '../messages.service';
 
 /**
@@ -9,15 +9,13 @@ import { MessageService } from '../messages.service';
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.css']
 })
-export class MessagesComponent implements OnInit {
+export class MessagesComponent {
 
   /**
    * Injecting message service to the component
    * @param messageService - service used for communication with the server
    */
-  constructor(public messageService: MessageService) {}
-
-  ngOnInit(): void {
-  }
-
+  constructor(
+    public messageService: MessageService,
+    ) {}
 }
