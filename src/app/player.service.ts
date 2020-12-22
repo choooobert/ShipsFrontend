@@ -34,8 +34,9 @@ export class PlayerService {
     }
   
   /** POST: add a new player to the server */
-  addPlayer(player: Player): Observable<Player> {
-    return this.http.post<Player>(this.playersUrl, player, this.httpOptions)
+  addPlayer(name: string): Observable<Player> {
+    let url: string = `${this.playersUrl}/${name}`;
+    return this.http.post<Player>(url, this.httpOptions)
     .pipe(catchError(this.handleError));
   }
   
