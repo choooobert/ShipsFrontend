@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ButtonDetailsComponent } from './button-details.component';
+import { ShootMapComponent } from './shoot-map.component';
 
-describe('ButtonDetailsComponent', () => {
-  let component: ButtonDetailsComponent;
-  let fixture: ComponentFixture<ButtonDetailsComponent>;
+describe('GridComponent', () => {
+  let component: ShootMapComponent;
+  let fixture: ComponentFixture<ShootMapComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ButtonDetailsComponent ]
+      declarations: [ ShootMapComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ButtonDetailsComponent);
+    fixture = TestBed.createComponent(ShootMapComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

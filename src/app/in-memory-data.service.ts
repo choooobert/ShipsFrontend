@@ -3,14 +3,26 @@ import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Square } from './square';
 import { Player } from './player';
 
+/**
+ * Data service used for testing purposes;
+ * To be removed when back-end urls are provided.
+ */
 @Injectable({
   providedIn: 'root',
 })
 export class InMemoryDataService implements InMemoryDbService {
+  /**
+   * Creates mock databases to be used insted of actual http responses
+   * 
+   * @return defined database arrays of players and squares
+   */
   createDb() {
     const players = [];
 
-    const FIELDS: Square[] = [
+    /**
+     * Map of squares used by ship-map
+     */
+    const SHIPS: Square[] = [
       { id: 1, status: 3, taken: true},
       { id: 2, status: 0, taken: false},
       { id: 3, status: 0, taken: false},
@@ -113,7 +125,10 @@ export class InMemoryDataService implements InMemoryDbService {
       { id: 100, status: 3, taken: true},
     ];
 
-    const BUTTONS: Square[] = [
+    /**
+     * Map of squares used by shoot-map
+     */
+    const SHOTS: Square[] = [
       { id: 1, status: 3, taken: true},
       { id: 2, status: 0, taken: false},
       { id: 3, status: 0, taken: false},
@@ -216,14 +231,19 @@ export class InMemoryDataService implements InMemoryDbService {
       { id: 100, status: 3, taken: true},
     ];
 
-    return {players, FIELDS, BUTTONS};
+
+    return {players, SHIPS, SHOTS};
   }
 
-  // Overrides the genId method to ensure that a player always has an id.
-  // If the players array is empty,
-  // the method below returns the initial number (1).
-  // if the players array is not empty, the method below returns the highest
-  // player id + 1.
+  /**
+   * Overrides the genId method to ensure that a player always has an id.
+   * If the players array is empty,
+   * the method below returns the initial number (1).
+   * if the players array is not empty, the method below returns the highest
+   * player id + 1.
+   * TO BE REMOVED after players definition change.
+   * @param players - arrays of players to be checked for existing id
+   */
   genId(players: Player[]): number {
     return players.length > 0 ? Math.max(...players.map(player => player.id)) + 1 : 1;
   }

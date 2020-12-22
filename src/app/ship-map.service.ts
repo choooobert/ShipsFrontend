@@ -7,14 +7,15 @@ import { Observable, of } from 'rxjs';
 import { Square } from './square';
 
 /**
-* Service providing communication with backend for Ship-Map.
+* Service provides communication with backend for Ship-Map.
 * @Injectable - allowing for it to be injected as constructor parameter
 */
 @Injectable({
   providedIn: 'root'
 })
-export class ShootMapService {
-  private shootMapUrl = 'api/SHOTS';  // URL to web api
+export class ShipMapService {
+
+  private mapUrl = 'api/SHIPS';  // URL to web api
   
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -27,21 +28,21 @@ export class ShootMapService {
    */
   constructor(public messageService: MessageService, private http: HttpClient) { }
 
-  /** GET enemy map with ships from the server (ShootMap) */
-  getShootMap(): Observable<Square[]> {
-    return this.http.get<Square[]>(this.shootMapUrl)
+  /** GET players ship-map from the server */
+  getShipMapGrid(): Observable<Square[]> {
+    return this.http.get<Square[]>(this.mapUrl)
                     .pipe(
                       tap(_ => this.log('map updated')),
-                      catchError(this.handleError<Square[]>('getGrid', []))
+                      catchError(this.handleError<Square[]>('getShipMapGrid', []))
                       );
   }
 
   /**
-  * GET square by id. Will 404 if id not found - can be used for updating one square after each shot (or to be removed)
+  * GET square by id. Will 404 if id not found - can be used for updating one square after enemy shot (or to be removed)
   * @param id - square identification number on the map
   */
   getSquare(id: number): Observable<Square> {
-    const url = `${this.shootMapUrl}/${id}`;
+    const url = `${this.mapUrl}/${id}`;
     return this.http.get<Square>(url)
                     .pipe(tap(_ => this.log(`downloaded square id=${id}`)),
                     catchError(this.handleError<Square>(`getSquare id=${id}`))
@@ -52,10 +53,10 @@ export class ShootMapService {
   * PUT: updates the square on the server - can be used for sending ship placement before the game beginns
   * @param square - square object with the ship definition
   */
-  updateButton(button: Square): Observable<any> {
-    return this.http.put(this.shootMapUrl, button, this.httpOptions)
-                    .pipe(tap(_ => this.log(`updated button id=${button.id} on the server`)),
-                    catchError(this.handleError<any>('updateHero'))
+  updateSquare(square: Square): Observable<any> {
+    return this.http.put(this.mapUrl, square, this.httpOptions)
+                    .pipe(tap(_ => this.log(`updated button id=${square.id}`)),
+                    catchError(this.handleError<any>('updateSquare'))
     );
   }
 
@@ -76,8 +77,8 @@ export class ShootMapService {
     };
   }
 
-  /** Log a MapService message with the MessageService */
+  /** Log a ShipMapService message with the MessageService */
   private log(message: string) {
-    this.messageService.add(`Enemy map status: ${message}`);
+    this.messageService.add(`Ship-map status: ${message}`);
   }
 }
