@@ -74,12 +74,12 @@ export class ShootMapComponent implements OnInit {
     console.log("Before: ", currentButton.status);
     if(currentButton.taken) {
       currentButton.status = 1;
-      this.showMessage(this.hitNotification);
       this.showMessage(this.shootNotification);
+      this.showMessage(this.hitNotification);
     } else {
       currentButton.status = 2;
-      this.showMessage(this.missNotification);
       this.showMessage(this.braceNotification);
+      this.showMessage(this.missNotification);
     }
     this.updateButtonStatus(currentButton);
     this.getShotMap();

@@ -26,9 +26,6 @@ export class NotificationService {
         case NotificationType.warning:
           this.toastrService.warning(message.message);
           break;
-        case NotificationType.info:
-          this.toastrService.info(message.message);
-          break;
         default:
         case NotificationType.info:
           this.toastrService.info(message.message);
