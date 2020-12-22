@@ -40,7 +40,7 @@ export class PlayerService {
   }
   
   /** DELETE: delete the player from the server */
-  deleteHero(player: Player | string): Observable<Player> {
+  deletePlayer(player: Player | string): Observable<Player> {
     const name : string= typeof player === 'string' ? player : player.name;
     const url = `${this.playersUrl}/${name}`;
 
