@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../messages.service';
 import { ShootMapService } from '../shoot-map.service';
+import { NotificationMessage, NotificationType } from '../notification.message';
+import { NotificationService } from '../notification.service';
 import { Square } from '../square';
 
 /**
@@ -14,6 +16,10 @@ import { Square } from '../square';
 export class ShootMapComponent implements OnInit {
   
   map: Square[];
+  shootNotification: NotificationMessage;
+  braceNotification: NotificationMessage;
+  hitNotification: NotificationMessage;
+  missNotification: NotificationMessage;
 
   /**
   * Using injection of map service to be used as REST request service
@@ -22,7 +28,24 @@ export class ShootMapComponent implements OnInit {
   constructor(
     public messageService: MessageService,
     private shootMapService: ShootMapService,
-    ) { }
+    private notificationService: NotificationService,
+    ) {
+      this.shootNotification = {
+        message: 'Your turn. Shoot!',
+        type: NotificationType.info}
+
+      this.braceNotification = {
+        message: 'Brace yourself!',
+        type: NotificationType.info}
+
+      this.hitNotification = {
+        message: 'Hit!',
+        type: NotificationType.success}
+      
+      this.missNotification = {
+        message: 'Miss!',
+        type: NotificationType.error}
+     }
   
   /**
   * Calls for getShipMapGrid() method on component initialization
@@ -51,10 +74,12 @@ export class ShootMapComponent implements OnInit {
     console.log("Before: ", currentButton.status);
     if(currentButton.taken) {
       currentButton.status = 1;
-      this.messageService.add(`Hit !`);
+      this.showMessage(this.shootNotification);
+      this.showMessage(this.hitNotification);
     } else {
       currentButton.status = 2;
-      this.messageService.add(`Miss !`);
+      this.showMessage(this.braceNotification);
+      this.showMessage(this.missNotification);
     }
     this.updateButtonStatus(currentButton);
     this.getShotMap();
@@ -68,6 +93,13 @@ export class ShootMapComponent implements OnInit {
   updateButtonStatus(square: Square) {
     this.shootMapService.updateButton(square)
     .subscribe();
+  }
+
+  /**
+   * Displays toast notifications
+   */
+  showMessage(message: NotificationMessage) {
+    this.notificationService.sendMessage(message);
   }
 
 }

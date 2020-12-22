@@ -2,7 +2,7 @@
     <div *ngFor="let square of map">
         <mat-grid-tile>
             <button mat-mini-fab color="" [ngClass]="{'button-miss' : square.status==2, 'button-hit': square.status==1}" 
-                                            (click)="status =changeStatus(square.id)">
+                                            (click)="status = changeStatus(square.id)">
             </button>
         </mat-grid-tile>
     </div>
