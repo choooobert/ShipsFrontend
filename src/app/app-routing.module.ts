@@ -12,7 +12,7 @@ import { MessagesComponent } from './messages/messages.component';
  * Routing to be changed: default will redirect to home
  */
 const routes: Routes = [
-  { path: '', redirectTo: '/landing', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'landing', component: LandingComponent},
   { path: 'home', component: HomeComponent },
   { path: 'waiting-room', component: WaitingRoomComponent },
