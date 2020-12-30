@@ -1,0 +1,9 @@
+<mat-grid-list cols="10" rowHeight="1:1">
+    <div *ngFor="let square of map">
+        <mat-grid-tile>
+            <button mat-mini-fab color="" [ngClass]="{'button-miss': square.status==2, 'button-hit': square.status==1, 'button-ship': square.status==3}" 
+                                            (click)="onClick(square.id)" (click)="status = getStatus(square.id)">
+            </button>
+        </mat-grid-tile>
+    </div>
+</mat-grid-list>

@@ -7,17 +7,24 @@ import { Observable, of, throwError } from 'rxjs';
   
 import { Player } from './player';
 
+/**
+* Service provides communication with backend for players requests.
+* @Injectable - allowing for it to be injected as constructor parameter
+*/
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
-  private playersUrl = 'http://localhost:8080/room';  // URL to web api
+  private playersUrl = 'https://ships-room-service-backend.herokuapp.com/room';  // URL to web api
   
-   httpOptions = {
-     headers: new HttpHeaders({ 'Content-Type': 'application/json', 
-     "charset": "UTF-8"})
-   };
-  
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
+
+  /**
+   * Using injection of http client
+   * @param http - http clientrequired for communication
+   */
   constructor(private http: HttpClient) { }
   
   /** GET players from the server */

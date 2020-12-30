@@ -56,3 +56,11 @@ Run:
 ----
 npm install
 ----
+
+* To use the functionalities used in the project delete node_modules and run:
+[source: bash]
+----
+npm install ngx-toastr --save
+npm install --save @angular/material @angular/cdk
+npm install --save @angular/animations
+----
