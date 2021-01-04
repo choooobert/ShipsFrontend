@@ -52,7 +52,7 @@ export class PlayerService {
   }
   
   /**
-   * DELETE: delete the hero from the server
+   * DELETE: deletes the player from the server
    * @param player - player or player id to be removed from the server (to be updated when player definition changes)
    */
   deletePlayer(player: Player | number): Observable<Player> {

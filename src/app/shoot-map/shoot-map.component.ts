@@ -91,7 +91,7 @@ export class ShootMapComponent implements OnInit {
    * @param square - square on the map that has been shot
    */
   updateButtonStatus(square: Square) {
-    this.shootMapService.updateButton(square)
+    this.shootMapService.updateSquare(square)
     .subscribe();
   }
 
