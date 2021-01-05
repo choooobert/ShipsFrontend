@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { PlayerService } from '../player.service';
 import { Player } from '../player';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Represents welcome view of the app
@@ -20,7 +21,13 @@ export class HomeComponent implements OnInit {
    * Injecting player service for communication purpose
    * @param playerService - player communication service to be used
    */
-  constructor(private playerService: PlayerService) { }
+  constructor(
+    private playerService: PlayerService,
+    public translate: TranslateService) {
+      translate.setDefaultLang('en');
+      const browserLang = translate.getBrowserLang();
+      translate.use(browserLang.match(/en|pl/) ? browserLang : 'en');
+   }
   
   /**
    * Calls for getPlayers() method on component initialization

@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Player } from '../player';
 import { PlayerService } from '../player.service';
 import { MessageService } from '../messages.service';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Represents game view of the app, contains map components in:
@@ -28,7 +29,11 @@ export class GameComponent implements OnInit {
     private route: ActivatedRoute,
     private playerService: PlayerService,
     public messageService: MessageService,
-  ) { }
+    public translate: TranslateService) {
+      translate.setDefaultLang('en');
+      const browserLang = translate.getBrowserLang();
+      translate.use(browserLang.match(/en|pl/) ? browserLang : 'en');
+   }
 
   /**
    * Calls for getPlayer() method on component initialization

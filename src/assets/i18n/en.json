@@ -3,6 +3,34 @@
         "SELECT": "Select language: ",
         "WELCOME": "Ahoy Seadogs!",
         "MENU": "Menu (development purpose only):",
-        "Title": "Ships: The Game"
+        "TITLE": "Ships: The Game"
+    },
+
+    "HOME": {
+        "RULES": "Simple rules should be placed in here.",
+        "PLAYER_NAME": "Player name",
+        "INSTRUCTION": "This is your in-game identifier",
+        "PLACEHOLDER": "Enter your name",
+        "JOIN": "Join the game"
+    },
+
+    "WAITING_ROOM": {
+
+    },
+
+    "GAME": {
+        "INFO": "Game info"
+    },
+
+    "END": {
+
+    },
+
+    "MESSAGES": {
+
+    },
+
+    "TOAST": {
+
     }
 }

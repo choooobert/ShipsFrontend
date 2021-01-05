@@ -3,6 +3,14 @@
         "SELECT": "Wybierz język: ",
         "WELCOME": "Ahoj Psubraty!",
         "MENU": "Menu (tylko do celów rozwoju aplikacji):",
-        "Title": "Statki: Gra"
+        "TITLE": "Statki: Gra"
+    },
+
+    "HOME": {
+        "RULES": "Proste zasady gry, opisane w kilku zdaniach.",
+        "PLAYER_NAME": "Imię gracza",
+        "INSTRUCTION": "To jest Twój identyfikator w grze",
+        "PLACEHOLDER": "Wprowadź imię",
+        "JOIN": "Dołącz do gry"
     }
 }
