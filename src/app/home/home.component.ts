@@ -57,8 +57,7 @@ export class HomeComponent implements OnInit {
     if (!name) { return; }
     this.playerService.addPlayer(name)
       .subscribe(
-        player => {this.players.push(player);
-        }, 
+        () => {}, 
         error => { 
           console.log(error); 
           this.error_message = error;},

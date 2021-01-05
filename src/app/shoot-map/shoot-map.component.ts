@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
 import { MessageService } from '../messages.service';
-import { ShootMapService } from '../shoot-map.service';
+import { GameService } from '../game.service';
 import { NotificationMessage, NotificationType } from '../notification.message';
 import { NotificationService } from '../notification.service';
 import { Square } from '../square';
+import { ShootMapCellStatus } from '../shoot-map-cell-status';
+import { PlayerService } from '../player.service';
 
 /**
  * Represents players shoot-map with his/her hits and misses.
@@ -20,6 +22,8 @@ export class ShootMapComponent implements OnInit {
   braceNotification: NotificationMessage;
   hitNotification: NotificationMessage;
   missNotification: NotificationMessage;
+  @Input() player :string = '';
+  opponent : string;
 
   /**
   * Using injection of map service to be used as REST request service
@@ -27,7 +31,8 @@ export class ShootMapComponent implements OnInit {
   */
   constructor(
     public messageService: MessageService,
-    private shootMapService: ShootMapService,
+    private gameService: GameService,
+    private playerService : PlayerService,
     private notificationService: NotificationService,
     ) {
       this.shootNotification = {
@@ -51,48 +56,62 @@ export class ShootMapComponent implements OnInit {
   * Calls for getShipMapGrid() method on component initialization
   */
   ngOnInit(): void {
-    this.getShotMap();
+    this.getShootMap();
+    this.getOpponent();
   }
 
   /**
   * Updates local array representation of squares
   */
-  getShotMap(): void {
-    this.shootMapService.getShootMap()
-    .subscribe(squares => this.map = squares);
+  getShootMap(): void {
+    this.gameService.getShootMap(this.player)
+    .subscribe(shootMap => this.map = this.mapShootMapToArray(shootMap));
   }
 
-  // TODO
+
+  getOpponent(): void{
+    this.playerService.getPlayers()
+    .subscribe(
+      players => {
+        this.opponent = players[(players.indexOf({name: this.player})+1)%2].name;
+      }
+    );
+  }
+
+
+  private mapShootMapToArray(shipMap : Map<number, ShootMapCellStatus>) : Square[]{
+    let squares : Square[];
+    for (let i = 1; i <=100; i++) {
+      squares.push({id : i, status : 0, taken :false});
+    }
+    for(let entry of shipMap.entries()){
+      squares[entry[0]] = {id : entry[0]+1,
+         status : entry[1] === ShootMapCellStatus.SHOOT_MAP_MISS ? 2 :1,
+          taken :true};
+    }
+    return squares;
+  }
+
   /**
-   * Changes square status depanding on ship/no ship found - implemantation to be updated (map can only hold statuses hit or miss);
-   * Logic to be moved to backend.
    * @param id - square identification number
    */
   changeStatus(id: number): void {
+    let cellStatus : ShootMapCellStatus;
+    this.gameService.shootPlayer(this.player, this.opponent, id-1)
+        .subscribe(shootResponse =>{ cellStatus = shootResponse.shootMapCellStatus})
     console.log("Changing cell status");
     const currentButton = this.map[id - 1];
     console.log("Before: ", currentButton.status);
-    if(currentButton.taken) {
+    if(cellStatus === ShootMapCellStatus.SHOOT_MAP_SHIP_HIT) {
       currentButton.status = 1;
       this.showMessage(this.shootNotification);
       this.showMessage(this.hitNotification);
-    } else {
+    } else if(cellStatus === ShootMapCellStatus.SHOOT_MAP_MISS){
       currentButton.status = 2;
       this.showMessage(this.braceNotification);
       this.showMessage(this.missNotification);
     }
-    this.updateButtonStatus(currentButton);
-    this.getShotMap();
     console.log("After: ", this.map[id-1].status);
-  }
-
-  /**
-   * Updates status of a single square on the map om the server when shot
-   * @param square - square on the map that has been shot
-   */
-  updateButtonStatus(square: Square) {
-    this.shootMapService.updateSquare(square)
-    .subscribe();
   }
 
   /**
