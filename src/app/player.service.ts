@@ -29,14 +29,14 @@ export class PlayerService {
   
   /** GET players from the server */
   getPlayers(): Observable<Player[]> {
-    return this.http.get<Player[]>(this.playersUrl)
+    return this.http.get<Player[]>(this.playersUrl, this.httpOptions)
     .pipe(catchError(this.handleError));
   }
 
     /** GET player by name. Will 404 if name not found */
     getPlayer(name: string): Observable<Player> {
       const url = `${this.playersUrl}/${name}`;
-      return this.http.get<Player>(url)
+      return this.http.get<Player>(url, this.httpOptions)
       .pipe(catchError(this.handleError));
     }
   
