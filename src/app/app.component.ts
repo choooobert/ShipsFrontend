@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { NotificationType } from './notification.message';
 import { NotificationService } from './notification.service';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Main view of the app;
@@ -18,13 +18,21 @@ export class AppComponent implements OnInit{
 
   constructor(
     private toastr: ToastrService,
-    private notificationService: NotificationService
-    ){}
+    private notificationService: NotificationService,
+    public translate: TranslateService
+    ){
+      translate.addLangs(['en', 'pl']);
+      translate.setDefaultLang('en');
+      // const browserLang = translateService.getBrowserLang();
+      // translateService.use(browserLang.match(/en|pl/) ? browserLang : 'en');
+    }
 
-  /**
-   * Test purpose only - REMOVE
-   */
-  ngOnInit(): void {
+    ngOnInit(): void {
+    }
+  
+
+  switchLang(lang: string) {
+    this.translate.use(lang);
   }
   
 }

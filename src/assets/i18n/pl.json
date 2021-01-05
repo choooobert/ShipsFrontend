@@ -1,0 +1,8 @@
+{
+    "APP": {
+        "SELECT": "Wybierz język: ",
+        "WELCOME": "Ahoj Psubraty!",
+        "MENU": "Menu (tylko do celów rozwoju aplikacji):",
+        "Title": "Statki: Gra"
+    }
+}
