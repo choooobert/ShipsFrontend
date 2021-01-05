@@ -25,5 +25,11 @@
         "SHOTS": "Statki przeciwnika",
         "PLAYER": "Gracz",
         "END": "Zakończ grę"
+    },
+
+    "END": {
+        "RESTART": "Rozpocznij nową grę",
+        "CREDITS_BY": "Autor zdjęcia",
+        "CREDITS_ON": "w serwisie"
     }
 }

@@ -28,7 +28,9 @@
     },
 
     "END": {
-
+        "RESTART": "Start new game",
+        "CREDITS_BY": "Photo by",
+        "CREDITS_ON": "on"
     },
 
     "MESSAGES": {
