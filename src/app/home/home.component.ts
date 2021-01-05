@@ -58,14 +58,8 @@ export class HomeComponent implements OnInit {
         error => { 
           console.log(error); 
           this.error_message = error;},
-        () => {
-          if(this.players.length === 2){
-            let game_url  = '/game/' + name;
-            this.router.navigate([game_url]);
-          } else{
-            this.router.navigate(['/waiting-room']);
-          }
-        });
+        () => this.router.navigate(['/waiting-room/' + name])
+      );
   }
 
   delete(): void {

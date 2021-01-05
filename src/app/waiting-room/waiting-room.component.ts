@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { PlayerService } from '../player.service';
 import { Player } from '../player';
+import { Subscription, timer } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 
 /**
  * Represents waiting room view, on which we can see player name if only one have joined.
@@ -13,8 +16,10 @@ import { Player } from '../player';
 })
 export class WaitingRoomComponent implements OnInit {
 
-  player: Player;
-  players: Player[];
+  subscription: Subscription;
+  private MAX_NUMBER_OF_PLAYERS_IN_ROOM: number = 2;
+  sessionPlayer: Player;
+  playersInRoom: Player[];
 
   /**
    * Injecting player service for communication purpose and initializing empty players list.
@@ -22,15 +27,30 @@ export class WaitingRoomComponent implements OnInit {
    */
   constructor(
     private playerService: PlayerService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
   ) {
-    this.players = [];
+    this.playersInRoom = [];
+    this.sessionPlayer = {name: this.activatedRoute.snapshot.paramMap.get('name')} as Player;
+  }
+  
+  ngOnInit() {
+      this.subscription = timer(0, 2000).pipe(
+        switchMap(() => this.playerService.getPlayers())
+      ).subscribe(players => {
+        this.playersInRoom = players;
+        if(this.MAX_NUMBER_OF_PLAYERS_IN_ROOM == players.length) {
+          this.router.navigate(['/game/' + this.sessionPlayer.name]);
+        }
+      });
+  }
+  
+  ngOnDestroy() {
+      this.subscription.unsubscribe();
   }
 
-  /**
-   * Calls for getPlayers() method on component initialization
-   */
-  ngOnInit(): void {
-    this.getPlayers();
+  goToUrl(): void {
+    document.location.href = document.location.hostname + '/game/' + this.sessionPlayer.name;
   }
 
   /**
@@ -39,6 +59,6 @@ export class WaitingRoomComponent implements OnInit {
    */
   getPlayers(): void {
     this.playerService.getPlayers()
-        .subscribe(players => this.players = players);
+        .subscribe(playersInRoom => this.playersInRoom = playersInRoom);
   }
 }

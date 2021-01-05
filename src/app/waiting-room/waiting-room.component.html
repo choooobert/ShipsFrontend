@@ -22,10 +22,8 @@
     <div class="col-lg-6">
         <div class="bs-component">
           <ul class="list-group">
-            <li *ngFor="let player of players" class="list-group-item d-flex justify-content-between align-items-center">
-                <a routerLink="../game/{{player.id}}">
-                    <span class="badge">{{player.id}}</span> {{player.name}} 
-                </a>
+            <li *ngFor="let player of playersInRoom" class="list-group-item d-flex justify-content-between align-items-center">
+                <span class="badge">{{player.name}}</span> 
             </li>
           </ul>
         </div>

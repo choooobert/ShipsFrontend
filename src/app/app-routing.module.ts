@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: '', redirectTo: '/landing', pathMatch: 'full' },
   { path: 'landing', component: LandingComponent},
   { path: 'home', component: HomeComponent },
-  { path: 'waiting-room', component: WaitingRoomComponent },
+  { path: 'waiting-room/:name', component: WaitingRoomComponent },
   { path: 'game/:name', component: GameComponent},
   { path: 'message', component: MessagesComponent},
 ];
