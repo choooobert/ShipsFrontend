@@ -34,7 +34,8 @@
     },
 
     "MESSAGES": {
-
+        "TITLE": "Messages",
+        "CLEAR": "Clear"
     },
 
     "TOAST": {

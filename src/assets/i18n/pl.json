@@ -31,5 +31,10 @@
         "RESTART": "Rozpocznij nową grę",
         "CREDITS_BY": "Autor zdjęcia",
         "CREDITS_ON": "w serwisie"
+    },
+
+    "MESSAGES": {
+        "TITLE": "Powiadomienia",
+        "CLEAR": "Wyczyść"
     }
 }
