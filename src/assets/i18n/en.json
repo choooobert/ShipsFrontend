@@ -20,7 +20,11 @@
     },
 
     "GAME": {
-        "INFO": "Game info"
+        "INFO": "Game info",
+        "SHIPS": "Your ships",
+        "SHOTS": "Enemy ships",
+        "PLAYER": "Player info",
+        "END": "End the game"
     },
 
     "END": {

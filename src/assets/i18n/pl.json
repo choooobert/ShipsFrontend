@@ -17,5 +17,13 @@
     "WAITING_ROOM": {
         "LIST": "Lista graczy",
         "WAITING": "Oczekiwanie na dołączenie pozostałych graczy"
+    },
+
+    "GAME": {
+        "INFO": "Informacje",
+        "SHIPS": "Twoje statki",
+        "SHOTS": "Statki przeciwnika",
+        "PLAYER": "Gracz",
+        "END": "Zakończ grę"
     }
 }
