@@ -12,8 +12,6 @@ import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
 import { GameComponent } from './game/game.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LandingComponent } from './landing/landing.component';
-import { ShootMapComponent } from './shoot-map/shoot-map.component';
-import { ShipMapComponent } from './ship-map/ship-map.component';
 import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
@@ -26,8 +24,6 @@ import { MessagesComponent } from './messages/messages.component';
     WaitingRoomComponent,
     GameComponent,
     LandingComponent,
-    ShootMapComponent,
-    ShipMapComponent,
     MessagesComponent,
   ],
   imports: [
