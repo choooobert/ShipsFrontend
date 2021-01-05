@@ -15,7 +15,8 @@
     },
 
     "WAITING_ROOM": {
-
+        "LIST": "Players list",
+        "WAITING": "Waiting for others to join"
     },
 
     "GAME": {
