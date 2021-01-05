@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs';
 import { Square } from './square';
 
 /**
-* Service providing communication with backend for Ship-Map.
+* Provides communication with backend for Shoot-Map.
 * @Injectable - allowing for it to be injected as constructor parameter
 */
 @Injectable({
@@ -52,10 +52,10 @@ export class ShootMapService {
   * PUT: updates the square on the server - can be used for sending ship placement before the game beginns
   * @param square - square object with the ship definition
   */
-  updateButton(button: Square): Observable<any> {
-    return this.http.put(this.shootMapUrl, button, this.httpOptions)
-                    .pipe(tap(_ => this.log(`updated button id=${button.id} on the server`)),
-                    catchError(this.handleError<any>('updateHero'))
+  updateSquare(square: Square): Observable<any> {
+    return this.http.put(this.shootMapUrl, square, this.httpOptions)
+                    .pipe(tap(_ => this.log(`updated square id=${square.id} on the server`)),
+                    catchError(this.handleError<any>('updateSquare'))
     );
   }
 

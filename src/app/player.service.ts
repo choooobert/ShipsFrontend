@@ -52,6 +52,7 @@ export class PlayerService {
     const name : string= typeof player === 'string' ? player : player.name;
     const url = `${this.playersUrl}/${name}`;
 
+
     return this.http.delete<Player>(url, this.httpOptions)
     .pipe(catchError(this.handleError));
   }
