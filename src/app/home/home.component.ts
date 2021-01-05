@@ -14,8 +14,7 @@ import { Player } from '../player';
 })
 export class HomeComponent implements OnInit {
 
-  player: Player;
-  players: Player[];
+  private players: Player[];
   error_message:string;
 
   /**
@@ -34,15 +33,6 @@ export class HomeComponent implements OnInit {
     this.getPlayers();
     this.error_message = ""; 
     }
-
-  /**
-   * Gets players list from the server;
-   * Can be used to redirect to landing page if list already contains two players
-   */
-  getPlayers(): void {
-    this.playerService.getPlayers()
-    .subscribe(players => this.players = players);
-  }
 
   /**
    * Adds new player to the list and sends the player to the server
@@ -72,5 +62,14 @@ export class HomeComponent implements OnInit {
         () => {
           this.router.navigate(['/waiting-room']);
         });
+  }
+
+  /**
+   * Gets players list from the server;
+   * Can be used to redirect to landing page if list already contains two players
+   */
+  private getPlayers(): void {
+    this.playerService.getPlayers()
+    .subscribe(players => this.players = players);
   }
 }

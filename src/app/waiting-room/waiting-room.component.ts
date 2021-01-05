@@ -15,7 +15,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./waiting-room.component.css']
 })
 export class WaitingRoomComponent implements OnInit {
-  
+
   private MAX_NUMBER_OF_PLAYERS_IN_ROOM: number = 2;
   private subscription: Subscription;
   private sessionPlayer: Player;
@@ -31,31 +31,25 @@ export class WaitingRoomComponent implements OnInit {
     private router: Router,
   ) {
     this.playersInRoom = [];
-    this.sessionPlayer = {name: this.activatedRoute.snapshot.paramMap.get('name')} as Player;
-  }
-  
-  ngOnInit() {
-      this.subscription = timer(0, 2000).pipe(
-        switchMap(() => this.playerService.getPlayers())
-      ).subscribe(players => {
-        this.playersInRoom = players;
-        if(this.MAX_NUMBER_OF_PLAYERS_IN_ROOM == players.length) {
-          this.router.navigate(['/game/' + this.sessionPlayer.name]);
-        }
-      });
-  }
-  
-  ngOnDestroy() {
-    console.log("Destroy!");
-      this.subscription.unsubscribe();
+    this.sessionPlayer = { name: this.activatedRoute.snapshot.paramMap.get('name') } as Player;
   }
 
-  /**
-   * Gets players list from the server;
-   * Can be used to redirect to game view directly if list contains two players
-   */
-  getPlayers(): void {
-    this.playerService.getPlayers()
-        .subscribe(playersInRoom => this.playersInRoom = playersInRoom);
+  ngOnInit() {
+    this.subscription = timer(0, 2000)
+    .pipe(switchMap(() => this.playerService.getPlayers()))
+    .subscribe(playersInRoom => this.assignPlayersInRoom(playersInRoom));
   }
+
+  ngOnDestroy() {
+    console.log("Destroy!");
+    this.subscription.unsubscribe();
+  }
+
+  private assignPlayersInRoom(playersInRoom: Player[]) {
+    this.playersInRoom = playersInRoom;
+    if (this.MAX_NUMBER_OF_PLAYERS_IN_ROOM == playersInRoom.length) {
+      this.router.navigate(['/game/' + this.sessionPlayer.name]);
+    }
+  }
+
 }

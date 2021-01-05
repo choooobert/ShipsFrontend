@@ -1,11 +1,16 @@
 <div class="row" style="padding: 2rem">
     <div class="col-lg-12">
         <div class="bs-component">
-        
+
             <div class="card text-white bg-primary mb-3" style="text-align: center;">
                 <div class="card-body">
                     <h4 class="card-title">Ships: The Game</h4>
-                    <p class="card-text">Simple rules should be placed in here.</p>
+                    <p class="card-text">Rules:</p>
+                    <ol>
+                        <li>Player wins if opponent is out of ships</li>
+                        <li>You shoot until you miss!</li>
+                        <li>One game consists of one match</li>
+                    </ol>
                 </div>
             </div>
         </div>
@@ -28,15 +33,17 @@
     <div class="col-lg-4 offset-lg-1" style="padding-top: 2rem;">
         <p class="bs-component">
             <a>
-                <button (click)="add(playerName.value)" type="button" class="btn btn-primary btn-lg btn-block">Join the game</button>
-            </a> 
+                <button (click)="add(playerName.value)" type="button" class="btn btn-primary btn-lg btn-block">Join the
+                    game</button>
+            </a>
         </p>
     </div>
     <div class="col-lg-4 offset-lg-1" style="padding-top: 2rem;">
         <p class="bs-component">
             <a>
-                <button (click)="delete()" type="button" class="btn btn-primary btn-lg btn-block">Delete all players</button>
-            </a> 
+                <button (click)="delete()" type="button" class="btn btn-primary btn-lg btn-block">Delete all
+                    players</button>
+            </a>
         </p>
     </div>
 </div>
