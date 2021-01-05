@@ -15,10 +15,10 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./waiting-room.component.css']
 })
 export class WaitingRoomComponent implements OnInit {
-
-  subscription: Subscription;
+  
   private MAX_NUMBER_OF_PLAYERS_IN_ROOM: number = 2;
-  sessionPlayer: Player;
+  private subscription: Subscription;
+  private sessionPlayer: Player;
   playersInRoom: Player[];
 
   /**
@@ -46,11 +46,8 @@ export class WaitingRoomComponent implements OnInit {
   }
   
   ngOnDestroy() {
+    console.log("Destroy!");
       this.subscription.unsubscribe();
-  }
-
-  goToUrl(): void {
-    document.location.href = document.location.hostname + '/game/' + this.sessionPlayer.name;
   }
 
   /**
