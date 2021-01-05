@@ -31,25 +31,25 @@ export class GameService {
   
   getShipMapWithRoundInfo(name: string) : Observable<ShipMapWithRoundInfo>{
     let url : string = `${this.gameUrl}/shipmap/${name}`
-    return this.http.get<ShipMapWithRoundInfo>(url) 
+    return this.http.get<ShipMapWithRoundInfo>(url, this.httpOptions) 
       .pipe(catchError(this.handleError));
   }
 
   getShootMap(name: string) : Observable<Map<number, ShootMapCellStatus>>{
     let url : string = `${this.gameUrl}/shootmap/${name}`
-    return this.http.get<Map<number, ShootMapCellStatus>>(url) 
+    return this.http.get<Map<number, ShootMapCellStatus>>(url, this.httpOptions) 
       .pipe(catchError(this.handleError));
   }
 
   shootPlayer(sourceName : string, targetName : string, cellIndex : number) : Observable<ShootResponse>{
     let url : string = `${this.gameUrl}/${sourceName}-vs-${targetName}/${cellIndex}`;
-    return this.http.get<ShootResponse>(url) 
+    return this.http.get<ShootResponse>(url, this.httpOptions) 
     .pipe(catchError(this.handleError));
   }
 
 
   deleteAllPlayers() : void {
-    this.http.delete(this.gameUrl) 
+    this.http.delete(this.gameUrl, this.httpOptions) 
     .pipe(catchError(this.handleError));
   }
 
