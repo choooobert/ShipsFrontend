@@ -36,5 +36,10 @@
     "MESSAGES": {
         "TITLE": "Powiadomienia",
         "CLEAR": "Wyczyść"
+    },
+
+    "TOAST": {
+        "WIN": "Koniec gry - Wygrałeś!",
+        "LOOSE": "Koniec gry - Przegrałeś!"
     }
 }

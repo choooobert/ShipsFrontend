@@ -39,6 +39,7 @@
     },
 
     "TOAST": {
-
+        "WIN": "Game over - you've won!",
+        "LOOSE": "Game over - you've lost!"
     }
 }
