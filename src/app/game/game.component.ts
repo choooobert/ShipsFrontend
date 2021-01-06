@@ -30,9 +30,6 @@ export class GameComponent implements OnInit {
     private playerService: PlayerService,
     public messageService: MessageService,
     public translate: TranslateService) {
-      translate.setDefaultLang('en');
-      const browserLang = translate.getBrowserLang();
-      translate.use(browserLang.match(/en|pl/) ? browserLang : 'en');
    }
 
   /**

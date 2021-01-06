@@ -24,9 +24,6 @@ export class HomeComponent implements OnInit {
   constructor(
     private playerService: PlayerService,
     public translate: TranslateService) {
-      translate.setDefaultLang('en');
-      const browserLang = translate.getBrowserLang();
-      translate.use(browserLang.match(/en|pl/) ? browserLang : 'en');
    }
   
   /**
