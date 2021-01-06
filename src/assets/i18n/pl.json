@@ -40,6 +40,10 @@
 
     "TOAST": {
         "WIN": "Koniec gry - Wygrałeś!",
-        "LOOSE": "Koniec gry - Przegrałeś!"
+        "LOOSE": "Koniec gry - Przegrałeś!",
+        "HIT": "Trafiony!",
+        "MISS": "Pudło!",
+        "YOUR_TURN": "Twoja kolej. Strzelaj!",
+        "ENEMY_TURN": "Kolej przeciwnika. Przygotuj się!"
     }
 }

@@ -40,6 +40,10 @@
 
     "TOAST": {
         "WIN": "Game over - you've won!",
-        "LOOSE": "Game over - you've lost!"
+        "LOOSE": "Game over - you've lost!",
+        "HIT": "Hit!",
+        "MISS": "Miss!",
+        "YOUR_TURN": "Your turn. Shoot!",
+        "ENEMY_TURN": "Opponent's turn. Brace yourself!"
     }
 }

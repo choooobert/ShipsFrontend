@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from '../messages.service';
 import { ShootMapService } from '../shoot-map.service';
-import { NotificationMessage, NotificationType } from '../notification.message';
+import { NotificationType } from '../notification.message';
 import { NotificationService } from '../notification.service';
+import { TranslateService } from '@ngx-translate/core';
 import { Square } from '../square';
 
 /**
@@ -16,10 +17,11 @@ import { Square } from '../square';
 export class ShootMapComponent implements OnInit {
   
   map: Square[];
-  shootNotification: NotificationMessage;
-  braceNotification: NotificationMessage;
-  hitNotification: NotificationMessage;
-  missNotification: NotificationMessage;
+
+  hitMessage: string;
+  missMessage: string;
+  turnMessage: string;
+  enemyTurnMessage: string;
 
   /**
   * Using injection of map service to be used as REST request service
@@ -29,22 +31,12 @@ export class ShootMapComponent implements OnInit {
     public messageService: MessageService,
     private shootMapService: ShootMapService,
     private notificationService: NotificationService,
+    public translate: TranslateService
     ) {
-      this.shootNotification = {
-        message: 'Your turn. Shoot!',
-        type: NotificationType.info}
-
-      this.braceNotification = {
-        message: 'Brace yourself!',
-        type: NotificationType.info}
-
-      this.hitNotification = {
-        message: 'Hit!',
-        type: NotificationType.success}
-      
-      this.missNotification = {
-        message: 'Miss!',
-        type: NotificationType.error}
+      this.hitMessage = 'TOAST.HIT';
+      this.missMessage = 'TOAST.MISS';
+      this.turnMessage = 'TOAST.YOUR_TURN';
+      this.enemyTurnMessage = 'TOAST.ENEMY_TURN';
      }
   
   /**
@@ -74,12 +66,12 @@ export class ShootMapComponent implements OnInit {
     console.log("Before: ", currentButton.status);
     if(currentButton.taken) {
       currentButton.status = 1;
-      this.showMessage(this.shootNotification);
-      this.showMessage(this.hitNotification);
+      this.showMessage(this.turnMessage, NotificationType.info);
+      this.showMessage(this.hitMessage, NotificationType.success);
     } else {
       currentButton.status = 2;
-      this.showMessage(this.braceNotification);
-      this.showMessage(this.missNotification);
+      this.showMessage(this.enemyTurnMessage, NotificationType.info);
+      this.showMessage(this.missMessage, NotificationType.error);
     }
     this.updateButtonStatus(currentButton);
     this.getShotMap();
@@ -96,10 +88,12 @@ export class ShootMapComponent implements OnInit {
   }
 
   /**
-   * Displays toast notifications
+   * Calls toast service to send notification
    */
-  showMessage(message: NotificationMessage) {
-    this.notificationService.sendMessage(message);
+  showMessage(message: string, type: NotificationType) {
+    this.translate
+        .get(message)
+        .subscribe((msg: string) => {this.notificationService.print(msg, type)});
   }
 
 }
