@@ -76,14 +76,12 @@ export class GameComponent implements OnInit {
     this.initializeEmptyMaps();
     this.getShootMap();
     this.getShipMap();
-
-
   }
 
   private initializeEmptyMaps() : void{
     for (let i = 1; i <=100; i++) {
-      this.shipMap.push({id : i, status : 0, taken :true});
-      this.shootMap.push({id : i, status : 0, taken :true});
+      this.shipMap.push({id : i, status : 0});
+      this.shootMap.push({id : i, status : 0});
     }
   }
 
@@ -98,8 +96,8 @@ export class GameComponent implements OnInit {
     .subscribe(
       players => {
         console.log(`player is ${this.player.name}`);
-        console.log(`player index is ${players.findIndex(p => {this.player.name === p.name})}`);
-        this.opponent = players[(players.findIndex(p => {this.player.name === p.name})+1)%2];
+        console.log(`player index is ${players.findIndex(p => {this.player.name == p.name})}`);
+        this.opponent = players[(players.indexOf((player : Player) => {this.player.name == player.name})+1)%2];
         console.log(`players are ${players[0].name} ${players[1].name}`);
         console.log(`player's opponent is ${this.opponent.name}`);
       }
@@ -111,23 +109,20 @@ export class GameComponent implements OnInit {
    */
   private getShootMap(): void {
      this.gameService.getShootMap(this.player.name).subscribe(
-       mapShootMap =>{ this.mapShootMapToArray(mapShootMap)
-        console.log(this.shootMap)}
+       mapShootMap =>{ this.mapShootMapToArray(mapShootMap)}
      );
   }
 
   private getShipMap(): void {
     this.gameService.getShipMap(this.player.name).subscribe(
-      mapShipMap =>{ this.mapShipMapToArray(mapShipMap);
-      console.log(this.shipMap)}
+      mapShipMap =>{ this.mapShipMapToArray(mapShipMap);}
     );
  }
 
   private mapShootMapToArray(shootMap : Map<number, ShootMapCellStatus>) : void{
     Object.keys(shootMap).forEach(key => {
       this.shootMap[key] = {id : parseInt(key)+1,
-         status : shootMap[key] === ShootMapCellStatus.SHOOT_MAP_MISS ? 2 :1,
-          taken :true};
+         status : shootMap[key] === ShootMapCellStatus.SHOOT_MAP_MISS ? 2 :1};
       });
   }
 
@@ -135,8 +130,7 @@ export class GameComponent implements OnInit {
     Object.keys(shipMap).forEach( key => {
       this.shipMap[key] = {id : parseInt(key)+1,
          status : shipMap[key] === ShipMapCellStatus.SHIP_MAP_MISS ? 2 :
-         shipMap[key] === ShipMapCellStatus.SHIP_MAP_SHIP ? 3 :1,
-          taken :true};
+         shipMap[key] === ShipMapCellStatus.SHIP_MAP_SHIP ? 3 :1};
         });
       }  
 
