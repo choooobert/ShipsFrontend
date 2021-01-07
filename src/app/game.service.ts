@@ -5,10 +5,10 @@ import { catchError } from 'rxjs/operators';
   
 import { Observable, throwError } from 'rxjs';
   
-import { ShipMapWithRoundInfo } from './ship-map-with-round-info';
 import { ShootMapCellStatus } from './shoot-map-cell-status';
 import { ShootResponse } from './shoot-response';
 import { ShipMapCellStatus } from './ship-map-cell-status';
+import { CurrentGameStatus } from './current-game-status';
 
 /**
 * Service provides communication with GameService.
@@ -45,6 +45,12 @@ export class GameService {
   shootPlayer(sourceName : string, targetName : string, cellIndex : number) : Observable<ShootResponse>{
     let url : string = `${this.gameUrl}/${sourceName}-vs-${targetName}/${cellIndex}`;
     return this.http.post<ShootResponse>(url, this.httpOptions) 
+    .pipe(catchError(this.handleError));
+  }
+
+  getCurrentGameStatus() : Observable<CurrentGameStatus>{
+    let url : string = `${this.gameUrl}/gamestatus`;
+    return this.http.get<CurrentGameStatus>(url, this.httpOptions) 
     .pipe(catchError(this.handleError));
   }
 

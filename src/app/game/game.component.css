@@ -10,12 +10,23 @@ mat-grid-tile {
     cursor: pointer;
     font-family: Arial;
   }
+
+  .button-blocked,
+  button:disabled {
+    background-color: #eee;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: not-allowed;
+    font-family: Arial;
+  }
   
   button:hover {
     background-color: #cfd8dc;
   }
   
-  .button-hit {
+  .button-hit,
+ button:disabled {
     background: #F63D3D;
     font-size: 30px;
     border: none;
@@ -24,7 +35,8 @@ mat-grid-tile {
     cursor: not-allowed;
   }
 
-  .button-ship {
+  .button-ship,
+  button:disabled {
     background: #0004ff;
     font-size: 30px;
     border: none;

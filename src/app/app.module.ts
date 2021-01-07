@@ -12,7 +12,6 @@ import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
 import { GameComponent } from './game/game.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LandingComponent } from './landing/landing.component';
-import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   /**
@@ -24,7 +23,6 @@ import { MessagesComponent } from './messages/messages.component';
     WaitingRoomComponent,
     GameComponent,
     LandingComponent,
-    MessagesComponent,
   ],
   imports: [
     BrowserModule,

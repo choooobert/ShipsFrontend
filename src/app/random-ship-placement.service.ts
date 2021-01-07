@@ -3,12 +3,8 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { catchError } from 'rxjs/operators';
 
   
-import { Observable, throwError } from 'rxjs';
+import {throwError } from 'rxjs';
   
-import { ShipMapWithRoundInfo } from './ship-map-with-round-info';
-import { ShootMapCellStatus } from './shoot-map-cell-status';
-import { ShootResponse } from './shoot-response';
-
 /**
 * Service provides communication with RandomShipPlacementService.
 * @Injectable - allowing for it to be injected as constructor parameter

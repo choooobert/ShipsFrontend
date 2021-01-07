@@ -5,7 +5,6 @@ import { HomeComponent } from './home/home.component';
 import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
 import { GameComponent } from './game/game.component';
 import { LandingComponent } from './landing/landing.component';
-import { MessagesComponent } from './messages/messages.component';
 
 /**
  * Router configuration mapping urls to angular components;
@@ -17,7 +16,6 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'waiting-room/:name', component: WaitingRoomComponent },
   { path: 'game/:name', component: GameComponent},
-  { path: 'message', component: MessagesComponent},
 ];
 
 @NgModule({
