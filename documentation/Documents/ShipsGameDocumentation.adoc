@@ -1,0 +1,527 @@
+:icons: font
+:toc: preamble
+:imagesdir: images
+:authors: Michał Jędrzejkiewicz, Hubert Milczarek, Kamil Jankowski
+
+= Ships game documentation
+
+Following document contains short description of project structure.
+
+== Components
+
+=== Backend
+
+Works as a server for the Frontend. It consists of several microservices written in Java 11 :
+
+* RoomService - waiting room implementation. It uses spring-boot `2.4.1`. Available at: https://ships-room-service-backend.herokuapp.com/
+* RandomShipPlacementService - implementation of an algorithm for random ship placement. Available at: https://ships-random-placement-service.herokuapp.com/
+* GameService - main program logic. Handles all operations during Ship game. Available at: https://ships-game-service-backend.herokuapp.com/
+
+=== Frontend
+
+Works as a UI. Service uses Typescript with Angular `11.0.4`. Available at: https://kamil-jankowski.github.io/ShipsFrontend/
+
+== REST API
+
+=== RoomService
+
+==== Resource
+
+[source]
+----
+/room
+----
+
+===== GET
+
+Returns a list of players in the room.
+
+[source]
+----
+GET /room HTTP/1.1
+----
+
+Example response:
+
+[source]
+----
+           Status = 200
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json"]
+     Content type = application/json
+             Body = [{"name":"DUMMY_NAME_1"},{"name":"DUMMY_NAME_2"}]
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+----
+
+===== POST
+
+Adds a player to the room.
+
+[source]
+----
+POST /room/{name} HTTP/1.1
+----
+
+[header,cols="20%,80%"]
+|===
+^|Attribute
+
+^|Description
+
+^.^| name
+| name of the player to add
+|===
+
+Example response:
+
+[source]
+----
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", Location:"http://localhost/room/DUMMY_NAME_2"]
+     Content type = application/json
+             Body =
+    Forwarded URL = null
+   Redirected URL = http://localhost/room/DUMMY_NAME_2
+          Cookies = []
+----
+
+===== DELETE
+
+Removes a player from the room.
+
+[source]
+----
+DELETE /room/{name} HTTP/1.1
+----
+
+[header,cols="20%,80%"]
+|===
+^|Attribute
+
+^|Description
+
+^.^| name
+| Name of the player to remove
+|===
+
+Example response:
+
+[source]
+----
+           Status = 200
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json"]
+     Content type = application/json
+             Body =
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+----
+
+
+===== DELETE
+
+Removes all players from the room.
+
+[source]
+----
+DELETE /room HTTP/1.1
+----
+
+[header,cols="20%,80%"]
+
+Example response:
+
+[source]
+----
+           Status = 200
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json"]
+     Content type = application/json
+             Body =
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+----
+
+=== RandomShipPlacementService
+
+==== Resource
+
+[source]
+----
+/randomplacement
+----
+
+===== POST
+
+Generates and sends ship map to GameService.
+
+[source]
+----
+POST /randomplacement/{name} HTTP/1.1
+----
+
+[header,cols="20%,80%"]
+|===
+^|Attribute
+
+^|Description
+
+^.^| name
+| Name of a player for whom a new ship map with randomly distributed boats will be generated.
+|===
+
+Example response:
+
+[source]
+----
+           Status = 200
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", Location:"http://localhost/maps/DUMMY_NAME_1-vs-DUMMY_NAME_2/10"]
+     Content type = application/json
+             Body =
+    Forwarded URL = null
+   Redirected URL = http://localhost/maps/DUMMY_NAME_1-vs-DUMMY_NAME_2/10
+          Cookies = []
+----
+
+
+=== GameService
+
+==== Resource
+
+[source]
+----
+/map
+----
+
+===== POST
+
+Creates a new instance in memory which stores player shoot and ship map.
+
+[source]
+----
+POST /map HTTP/1.1
+----
+
+[header,cols="20%,80%"]
+|===
+^|Attribute
+
+^|Description
+
+^.^| player
+| Player for whom map was generated
+
+^.^| shipMap
+| Ship map of given player
+|===
+
+Example response:
+
+[source]
+----
+           Status = 200
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", Location:"http://localhost/maps"]
+     Content type = application/json
+             Body =
+    Forwarded URL = null
+   Redirected URL = http://localhost/maps
+          Cookies = []
+----
+
+===== POST
+
+Shoots a particular cell.
+
+Used, when one player tries to shoot another player's ship.
+
+[source]
+----
+POST /map/{sourceName}-vs-{targetName}/{cellindex} HTTP/1.1
+----
+
+[header,cols="20%,80%"]
+|===
+^|Attribute
+
+^|Description
+
+^.^| sourceName
+| Source player name
+
+^.^| targetName
+| Target player name
+
+^.^| cellIndex
+| Cell number which should be shot.
+|===
+
+Example response:
+
+[source]
+----
+           Status = 201
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", Location:"http://localhost/maps/DUMMY_NAME_1-vs-DUMMY_NAME_2/10"]
+     Content type = application/json
+             Body = {"shootMapCellStatus":"SHOOT_MAP_SHIP_HIT"}
+    Forwarded URL = null
+   Redirected URL = http://localhost/maps/DUMMY_NAME_1-vs-DUMMY_NAME_2/10
+          Cookies = []
+----
+
+===== DELETE
+
+clean all players' maps.
+
+It should be used when a winner is evaluated and the game is over.
+
+[source]
+----
+DELETE /map HTTP/1.1
+----
+
+Example response:
+
+[source]
+----
+           Status = 200
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json"]
+     Content type = application/json
+             Body =
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+----
+
+==== Resource
+
+[source]
+----
+/map/shipmap
+----
+
+===== GET
+
+Returns map with randomly placed ships and information if there is the player's turn and if the player is looser.
+
+It should be used in the beginning of game and when the page is reloaded.
+
+[source]
+----
+GET /map/shipmap/{name} HTTP/1.1
+----
+
+[header,cols="20%,80%"]
+|===
+^|Attribute
+
+^|Description
+
+^.^| name
+| Name of a player for whom ship map should be fetched.
+|===
+
+Example response:
+
+[source]
+----
+           Status = 200
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"96":"SHIP_MAP_SHIP" , ... , "62":"SHIP_MAP_SHIP"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+----
+
+==== Resource
+
+[source]
+----
+/map/shootmap
+----
+
+===== GET
+
+Returns map with player shoots.
+
+It should be used in the beginning of game and when the page is reloaded.
+In the first case, the returned list should be empty.
+
+[source]
+----
+GET /map/shootmap/{name} HTTP/1.1
+----
+
+[header,cols="20%,80%"]
+|===
+^|Attribute
+
+^|Description
+
+^.^| name
+| Name of player for whom a shoot map will be fetched
+|===
+
+Example response:
+
+[source]
+----
+           Status = 200
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"1":"SHOOT_MAP_MISS",...,"62":"SHOOT_MAP_SHIP_HIT"}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+----
+
+===== GET
+
+Returns current game status which consists of player who is currently moving and is this player a looser.
+
+[source]
+----
+GET /map/gamestatus HTTP/1.1
+----
+
+Example response:
+
+[source]
+----
+           Status = 200
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"playerNameWhoMoves":"DUMMY_NAME_1","playerLooser":true}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+----
+
+== Frontend REST services
+
+=== Shoot map service
+
+Provides methods for communication with backend _Game service_ for Shoot-Map.
+
+. GET complete shoot map
++
+[source]
+----
+getShootMap(): Observable<Square[]>
+----
++
+Corresponds to `GET /map/shootmap/{name} HTTP/1.1`
+
+. GET square by id
++
+[source]
+----
+getSquare(id: number): Observable<Square>
+----
+
+. POST: updates the square on the server
++
+[source]
+----
+updateSquare(square: Square): Observable<any>
+----
++
+Corresponds to `POST /map/{sourceName}-vs-{targetName}/{cellindex} HTTP/1.1`
+
+=== Ship map service
+
+Provides methods for communication with backend _Game service_ for Ship-Map.
+
+. GET complete ship map
++
+[source]
+----
+getShipMapGrid(): Observable<Square[]>
+----
++
+Corresponds to `GET /map/shipmap/{name} HTTP/1.1`
+
+. GET square by id
++
+[source]
+----
+getSquare(id: number): Observable<Square>
+----
+
+. PUT: updates the square on the server
++
+[source]
+----
+updateSquare(square: Square): Observable<any>
+----
+
+
+. POST: updates the complete map on the server
++
+[source]
+----
+TBD
+----
++
+Corresponds to `POST /map HTTP/1.1`
+
+=== Player service
+
+Provides methods for communication with backend _Room service_ for Player.
+
+. GET players list
++
+[source]
+----
+getPlayers(): Observable<Player>
+----
++
+Corresponds to `GET /room HTTP/1.1`
+
+. GET one player
++
+[source]
+----
+getPlayer(name: string): Observable<Player>
+----
++
+Corresponds to `GET /room/{name} HTTP/1.1`
+
+. POST new player to the server
++
+[source]
+----
+addPlayer(player: Player): Observable<Player>
+----
++
+Corresponds to `POST /room HTTP/1.1`
+
+. DELETE
++
+[source]
+----
+deletePlayer(player: Player): Observable<Player>
+----
++
+Corresponds to `DELETE /room/{name} HTTP/1.1`
+
+. DELETE all players
++
+[source]
+----
+TBD
+----
++
+Corresponds to `DELETE /room HTTP/1.1`
