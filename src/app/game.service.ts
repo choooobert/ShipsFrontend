@@ -8,6 +8,7 @@ import { Observable, throwError } from 'rxjs';
 import { ShipMapWithRoundInfo } from './ship-map-with-round-info';
 import { ShootMapCellStatus } from './shoot-map-cell-status';
 import { ShootResponse } from './shoot-response';
+import { ShipMapCellStatus } from './ship-map-cell-status';
 
 /**
 * Service provides communication with GameService.
@@ -29,9 +30,9 @@ export class GameService {
    */
   constructor(private http: HttpClient) { }
   
-  getShipMapWithRoundInfo(name: string) : Observable<ShipMapWithRoundInfo>{
+  getShipMap(name: string) : Observable<Map<number, ShipMapCellStatus>>{
     let url : string = `${this.gameUrl}/shipmap/${name}`
-    return this.http.get<ShipMapWithRoundInfo>(url, this.httpOptions) 
+    return this.http.get<Map<number, ShipMapCellStatus>>(url, this.httpOptions) 
       .pipe(catchError(this.handleError));
   }
 
@@ -43,7 +44,7 @@ export class GameService {
 
   shootPlayer(sourceName : string, targetName : string, cellIndex : number) : Observable<ShootResponse>{
     let url : string = `${this.gameUrl}/${sourceName}-vs-${targetName}/${cellIndex}`;
-    return this.http.get<ShootResponse>(url, this.httpOptions) 
+    return this.http.post<ShootResponse>(url, this.httpOptions) 
     .pipe(catchError(this.handleError));
   }
 

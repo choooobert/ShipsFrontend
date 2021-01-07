@@ -47,13 +47,14 @@ export class HomeComponent implements OnInit {
     if (!name) { return; }
     this.playerService.addPlayer(name)
       .subscribe(
-        () => {}, 
+        any => {
+          this.error_message = '';
+          this.randomShipPlacementService.createNewSetOfMapsForGivenPlayer(name).subscribe(
+          any =>{this.router.navigate(['/waiting-room/' + name])})  
+        }, 
         error => { 
           console.log(error); 
-          this.error_message = error;},
-        () => {
-          this.randomShipPlacementService.createNewSetOfMapsForGivenPlayer(name);
-          this.router.navigate(['/waiting-room/' + name]);}
+          this.error_message = error;}
       );
   }
 

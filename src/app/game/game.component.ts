@@ -27,10 +27,10 @@ export class GameComponent implements OnInit {
   opponent: Player = {name : ''};
   playerTurn : Player = {name : ''};
 
+  isPlayersTurn : boolean;
+
   shipMap: Square[] = [];
   shootMap: Square[] = [];
-
-  isPlayersTurn : boolean;
 
   shootNotification: NotificationMessage;
   braceNotification: NotificationMessage;
@@ -73,9 +73,14 @@ export class GameComponent implements OnInit {
 
     this.getPlayer();
     this.getOpponent();
+    this.initializeEmptyMaps();
     this.getShootMap();
     this.getShipMap();
 
+
+  }
+
+  private initializeEmptyMaps() : void{
     for (let i = 1; i <=100; i++) {
       this.shipMap.push({id : i, status : 0, taken :true});
       this.shootMap.push({id : i, status : 0, taken :true});
@@ -92,7 +97,10 @@ export class GameComponent implements OnInit {
     this.playerService.getPlayers()
     .subscribe(
       players => {
-        this.opponent = players[(players.findIndex(player => {player.name === this.player.name})+1)%2];
+        console.log(`player is ${this.player.name}`);
+        console.log(`player index is ${players.findIndex(p => {this.player.name === p.name})}`);
+        this.opponent = players[(players.findIndex(p => {this.player.name === p.name})+1)%2];
+        console.log(`players are ${players[0].name} ${players[1].name}`);
         console.log(`player's opponent is ${this.opponent.name}`);
       }
     );
@@ -103,56 +111,43 @@ export class GameComponent implements OnInit {
    */
   private getShootMap(): void {
      this.gameService.getShootMap(this.player.name).subscribe(
-       mapShootMap =>{ this.shootMap = this.mapShootMapToArray(mapShootMap)}
+       mapShootMap =>{ this.mapShootMapToArray(mapShootMap)
+        console.log(this.shootMap)}
      );
   }
 
   private getShipMap(): void {
-    this.gameService.getShipMapWithRoundInfo(this.player.name).subscribe(
-      mapShipMapWithInfo =>{ this.shootMap = this.mapShipMapToArray(mapShipMapWithInfo.shipMap);
-        this.isPlayersTurn = mapShipMapWithInfo.isPlayerTurn;
-       this.playerTurn =  this.isPlayersTurn ? this.player : this.opponent; 
-      }
+    this.gameService.getShipMap(this.player.name).subscribe(
+      mapShipMap =>{ this.mapShipMapToArray(mapShipMap);
+      console.log(this.shipMap)}
     );
  }
 
-  private mapShootMapToArray(shipMap : Map<number, ShootMapCellStatus>) : Square[]{
-    let squares : Square[];
-    for (let i = 1; i <=100; i++) {
-      squares.push({id : i, status : 0, taken :false});
-    }
-    for(let entry of shipMap.entries()){
-      squares[entry[0]] = {id : entry[0]+1,
-         status : entry[1] === ShootMapCellStatus.SHOOT_MAP_MISS ? 2 :1,
+  private mapShootMapToArray(shootMap : Map<number, ShootMapCellStatus>) : void{
+    Object.keys(shootMap).forEach(key => {
+      this.shootMap[key] = {id : parseInt(key)+1,
+         status : shootMap[key] === ShootMapCellStatus.SHOOT_MAP_MISS ? 2 :1,
           taken :true};
-    }
-    return squares;
+      });
   }
 
-  private mapShipMapToArray(shipMap : Map<number, ShipMapCellStatus>) : Square[]{
-    let squares : Square[];
-    for (let i = 1; i <=100; i++) {
-      squares.push({id : i, status : 0, taken :false});
-    }
-
-    for(let entry of shipMap.entries()){
-      squares[entry[0]] = {id : entry[0]+1,
-         status : entry[1] === ShipMapCellStatus.SHIP_MAP_MISS ? 2 :
-         entry[1] === ShipMapCellStatus.SHIP_MAP_SHIP ? 3 :1,
+  private mapShipMapToArray(shipMap : Map<number, ShipMapCellStatus>) : void{
+    Object.keys(shipMap).forEach( key => {
+      this.shipMap[key] = {id : parseInt(key)+1,
+         status : shipMap[key] === ShipMapCellStatus.SHIP_MAP_MISS ? 2 :
+         shipMap[key] === ShipMapCellStatus.SHIP_MAP_SHIP ? 3 :1,
           taken :true};
-    }
-    return squares;
-  }
+        });
+      }  
 
 
     /**
    * @param id - square identification number
    */
   changeStatus(id: number): void {
-    let cellStatus : ShootMapCellStatus;
     this.gameService.shootPlayer(this.player.name, this.opponent.name, id-1)
       .subscribe(shootResponse =>{ 
-        cellStatus = shootResponse.shootMapCellStatus
+        let cellStatus : ShootMapCellStatus = shootResponse.shootMapCellStatus;
         console.log("Changing cell status");
         const currentButton = this.shootMap[id - 1];
         console.log("Before: ", currentButton.status);
@@ -169,6 +164,7 @@ export class GameComponent implements OnInit {
           this.isPlayersTurn = false;
           this.playerTurn = this.opponent;
         }
+        this.shootMap[id-1] = currentButton;
         console.log("After: ", this.shootMap[id-1].status);
     });
   }
