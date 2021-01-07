@@ -95,11 +95,12 @@ export class GameComponent implements OnInit {
     this.playerService.getPlayers()
     .subscribe(
       players => {
-        console.log(`player is ${this.player.name}`);
-        console.log(`player index is ${players.findIndex(p => {this.player.name == p.name})}`);
-        this.opponent = players[(players.indexOf((player : Player) => {this.player.name == player.name})+1)%2];
-        console.log(`players are ${players[0].name} ${players[1].name}`);
-        console.log(`player's opponent is ${this.opponent.name}`);
+        let playerIndex : number =-1;
+        for(let index in [0 , 1]){
+          if(players[parseInt(index)].name != this.player.name){
+            this.opponent[parseInt(index)];
+          }
+        }
       }
     );
   }
