@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from '../messages.service';
 
 /**
@@ -17,5 +18,9 @@ export class MessagesComponent {
    */
   constructor(
     public messageService: MessageService,
-    ) {}
+    public translate: TranslateService) {
+      translate.setDefaultLang('en');
+      const browserLang = translate.getBrowserLang();
+      translate.use(browserLang.match(/en|pl/) ? browserLang : 'en');
+   }
 }

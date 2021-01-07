@@ -1,0 +1,49 @@
+{
+    "APP": {
+        "SELECT": "Wybierz język: ",
+        "WELCOME": "Ahoj Psubraty!",
+        "MENU": "Menu (tylko do celów rozwoju aplikacji):",
+        "TITLE": "Statki: Gra"
+    },
+
+    "HOME": {
+        "RULES": "Proste zasady gry, opisane w kilku zdaniach.",
+        "PLAYER_NAME": "Imię gracza",
+        "INSTRUCTION": "To jest Twój identyfikator w grze",
+        "PLACEHOLDER": "Wprowadź imię",
+        "JOIN": "Dołącz do gry"
+    },
+
+    "WAITING_ROOM": {
+        "LIST": "Lista graczy",
+        "WAITING": "Oczekiwanie na dołączenie pozostałych graczy"
+    },
+
+    "GAME": {
+        "INFO": "Informacje",
+        "SHIPS": "Twoje statki",
+        "SHOTS": "Statki przeciwnika",
+        "PLAYER": "Gracz",
+        "END": "Zakończ grę"
+    },
+
+    "END": {
+        "RESTART": "Rozpocznij nową grę",
+        "CREDITS_BY": "Autor zdjęcia",
+        "CREDITS_ON": "w serwisie"
+    },
+
+    "MESSAGES": {
+        "TITLE": "Powiadomienia",
+        "CLEAR": "Wyczyść"
+    },
+
+    "TOAST": {
+        "WIN": "Koniec gry - Wygrałeś!",
+        "LOOSE": "Koniec gry - Przegrałeś!",
+        "HIT": "Trafiony!",
+        "MISS": "Pudło!",
+        "YOUR_TURN": "Twoja kolej. Strzelaj!",
+        "ENEMY_TURN": "Kolej przeciwnika. Przygotuj się!"
+    }
+}

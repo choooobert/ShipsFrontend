@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { PlayerService } from '../player.service';
 import { Player } from '../player';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Represents waiting room view, on which we can see player name if only one have joined.
@@ -22,8 +23,8 @@ export class WaitingRoomComponent implements OnInit {
    */
   constructor(
     private playerService: PlayerService,
-  ) {
-    this.players = [];
+    public translate: TranslateService) {
+      this.players = [];
   }
 
   /**

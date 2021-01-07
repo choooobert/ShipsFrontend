@@ -8,7 +8,7 @@
 
     <div class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/home">Ships: The Game</a>
+            <a class="navbar-brand" href="/home">{{'APP.TITLE'|translate}}</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -17,14 +17,16 @@
                 <form class="form-inline my-2 my-lg-0">
                   <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                      <a class="nav-link" href="#">
-                        <img src="https://www.flaticon.com/svg/static/icons/svg/197/197374.svg" alt="English" width="20" height="20">
-                      </a>
-                    </li>
-                    <li>
-                      <a class="nav-link" href="#">
-                        <img src="https://www.flaticon.com/svg/static/icons/svg/197/197529.svg" alt="Polski" width="20" height="20">
-                      </a>
+                      <label for="">
+                        {{'APP.SELECT' | translate}}
+                        <select #langselect (change)="switchLang(langselect.value)">
+                          <option *ngFor="let lang of translate.getLangs()"
+                                  [value]="lang"
+                                  [selected]="lang === translate.currentLang">
+                                  {{ lang }}
+                          </option>
+                        </select>
+                      </label>
                     </li>
                   </ul>
                 </form>
@@ -34,10 +36,10 @@
     
     <div class="container">
       <div class="jumbotron">
-        <h1 class="display-5">Ahoy Seadogs!</h1>
+        <h1 class="display-5">{{'APP.WELCOME' | translate }}</h1>
         <!-- For development purposes only: -->
         <nav>
-          <p>Menu (development purpose only): 
+          <p>{{'APP.MENU' | translate }} 
             <a routerLink="/home">Home </a>
             <a routerLink="/waiting-room">Room </a>
             <a routerLink="/game/1">Game </a>

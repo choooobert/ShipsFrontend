@@ -1,0 +1,49 @@
+{
+    "APP": {
+        "SELECT": "Select language: ",
+        "WELCOME": "Ahoy Seadogs!",
+        "MENU": "Menu (development purpose only):",
+        "TITLE": "Ships: The Game"
+    },
+
+    "HOME": {
+        "RULES": "Simple rules should be placed in here.",
+        "PLAYER_NAME": "Player name",
+        "INSTRUCTION": "This is your in-game identifier",
+        "PLACEHOLDER": "Enter your name",
+        "JOIN": "Join the game"
+    },
+
+    "WAITING_ROOM": {
+        "LIST": "Players list",
+        "WAITING": "Waiting for others to join"
+    },
+
+    "GAME": {
+        "INFO": "Game info",
+        "SHIPS": "Your ships",
+        "SHOTS": "Enemy ships",
+        "PLAYER": "Player info",
+        "END": "End the game"
+    },
+
+    "END": {
+        "RESTART": "Start new game",
+        "CREDITS_BY": "Photo by",
+        "CREDITS_ON": "on"
+    },
+
+    "MESSAGES": {
+        "TITLE": "Messages",
+        "CLEAR": "Clear"
+    },
+
+    "TOAST": {
+        "WIN": "Game over - you've won!",
+        "LOOSE": "Game over - you've lost!",
+        "HIT": "Hit!",
+        "MISS": "Miss!",
+        "YOUR_TURN": "Your turn. Shoot!",
+        "ENEMY_TURN": "Opponent's turn. Brace yourself!"
+    }
+}

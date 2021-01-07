@@ -9,9 +9,23 @@ import { ToastrService } from 'ngx-toastr';
 export class NotificationService {
 
   private notificationSubject: Subject<NotificationMessage> = new Subject<NotificationMessage>();
+  private notification: NotificationMessage;
   
   sendMessage(message: NotificationMessage) {
     this.notificationSubject.next(message);
+  }
+
+  /**
+   * Defines toast notification
+   * @param message - notification to be printed
+   * @param type - type of notification
+   */
+  print(message: string, type: NotificationType) {
+    this.notification = {
+      message: message,
+      type: type
+    };
+    this.sendMessage(this.notification);
   }
 
   constructor(private toastrService: ToastrService) {
@@ -31,7 +45,7 @@ export class NotificationService {
           this.toastrService.info(message.message);
           break;
       }
-    }, err => {console.log('Error when processing toatr message');}
+    }, err => {console.log('Error when processing toastr message');}
     );
   }
 }
