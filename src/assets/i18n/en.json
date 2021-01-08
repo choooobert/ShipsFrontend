@@ -7,11 +7,15 @@
     },
 
     "HOME": {
-        "RULES": "Simple rules should be placed in here.",
+        "RULES": "Rules:",
+        "ONE": "Player wins if opponent is out of ships",
+        "TWO": "You shoot until you miss!",
+        "THREE": "One game consists of one match",
         "PLAYER_NAME": "Player name",
         "INSTRUCTION": "This is your in-game identifier",
         "PLACEHOLDER": "Enter your name",
-        "JOIN": "Join the game"
+        "JOIN": "Join the game",
+        "DELETE": "Delete all players"
     },
 
     "WAITING_ROOM": {

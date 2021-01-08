@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription, timer } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { PlayerService } from '../player.service';
 import { Player } from '../player';
@@ -14,8 +17,10 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class WaitingRoomComponent implements OnInit {
 
-  player: Player;
-  players: Player[];
+  private MAX_NUMBER_OF_PLAYERS_IN_ROOM: number = 2;
+  private subscription: Subscription;
+  private sessionPlayer: Player;
+  playersInRoom: Player[];
 
   /**
    * Injecting player service for communication purpose and initializing empty players list.
@@ -23,23 +28,32 @@ export class WaitingRoomComponent implements OnInit {
    */
   constructor(
     private playerService: PlayerService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     public translate: TranslateService) {
-      this.players = [];
-  }
+      this.playersInRoom = [];
+      this.sessionPlayer = { name: this.activatedRoute.snapshot.paramMap.get('name') } as Player;
+    }
 
   /**
-   * Calls for getPlayers() method on component initialization
+   * Calls for getPlayers() method on component initialization and assigns players to the room
    */
-  ngOnInit(): void {
-    this.getPlayers();
+  ngOnInit() {
+    this.subscription = timer(0, 2000)
+      .pipe(switchMap(() => this.playerService.getPlayers()))
+      .subscribe(playersInRoom => this.assignPlayersInRoom(playersInRoom));
   }
 
-  /**
-   * Gets players list from the server;
-   * Can be used to redirect to game view directly if list contains two players
-   */
-  getPlayers(): void {
-    this.playerService.getPlayers()
-        .subscribe(players => this.players = players);
+  ngOnDestroy() {
+    console.log("Destroy!");
+    this.subscription.unsubscribe();
   }
+
+  private assignPlayersInRoom(playersInRoom: Player[]) {
+    this.playersInRoom = playersInRoom;
+    if (this.MAX_NUMBER_OF_PLAYERS_IN_ROOM == playersInRoom.length) {
+      this.router.navigate(['/game/' + this.sessionPlayer.name]);
+    }
+  }
+  
 }

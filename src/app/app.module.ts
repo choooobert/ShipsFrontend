@@ -10,18 +10,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './in-memory-data.service';
-
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
 import { GameComponent } from './game/game.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LandingComponent } from './landing/landing.component';
-import { ShootMapComponent } from './shoot-map/shoot-map.component';
-import { ShipMapComponent } from './ship-map/ship-map.component';
-import { MessagesComponent } from './messages/messages.component';
 
 export function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -36,10 +30,7 @@ export function httpLoaderFactory(http: HttpClient) {
     HomeComponent,
     WaitingRoomComponent,
     GameComponent,
-    LandingComponent,
-    ShootMapComponent,
-    ShipMapComponent,
-    MessagesComponent,
+    LandingComponent
   ],
   imports: [
     BrowserModule,
@@ -58,11 +49,8 @@ export function httpLoaderFactory(http: HttpClient) {
         useFactory: httpLoaderFactory,
         deps: [HttpClient]
       }
-    }),
-    // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
-    // and returns simulated server responses.
-    // Remove it when a real server is ready to receive requests.
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, { dataEncapsulation: false, passThruUnknownUrl: true })],
+    })
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

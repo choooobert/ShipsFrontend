@@ -7,7 +7,15 @@
             {{'GAME.SHIPS' | translate}}
           </div>
         </div>
-        <app-ship-map></app-ship-map>
+        <mat-grid-list cols="10" rowHeight="1:1">
+          <div *ngFor="let square of shipMap">
+            <mat-grid-tile>
+              <button mat-mini-fab color="" 
+                [ngClass]="{'button-miss': square.status==2, 'button-hit': square.status==1, 'button-ship': square.status==3}">
+              </button>
+            </mat-grid-tile>
+          </div>
+        </mat-grid-list>
       </div>
 
     </div>
@@ -19,8 +27,16 @@
             {{'GAME.SHOTS' | translate}}
           </div>
         </div>
-        <app-shoot-map></app-shoot-map>
-      </div>
+        <mat-grid-list cols="10" rowHeight="1:1">
+          <div *ngFor="let square of shootMap">
+            <mat-grid-tile>
+              <button mat-mini-fab color="" [ngClass]="{'button-miss' : square.status==2, 'button-hit': square.status==1, 'button-blocked' : square.status==4}" 
+                                              (click)="status = changeStatus(square.id)">
+              </button>
+            </mat-grid-tile>
+          </div>
+      </mat-grid-list>
+    </div>
 
     </div>
 </div>
@@ -42,7 +58,9 @@
     <div class="card" style="text-align: center; padding-top: 1rem;">
       <h5 class="card-title">{{'GAME.INFO' | translate}}</h5>
       <div class="card-body">
-      <app-messages></app-messages>
+        <p *ngIf="playerTurn">
+          Turn : {{ playerTurn.name }}
+        </p>
       </div>
     </div>
   </div>

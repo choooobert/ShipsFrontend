@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
 
 import { PlayerService } from '../player.service';
 import { Player } from '../player';
 import { TranslateService } from '@ngx-translate/core';
+import { GameService } from '../game.service';
+import { RandomShipPlacementService } from '../random-ship-placement.service';
 
 /**
  * Represents welcome view of the app
@@ -14,32 +17,25 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HomeComponent implements OnInit {
 
-  player: Player;
-  players: Player[];
+  private players: Player[];
+  error_message:string;
 
   /**
    * Injecting player service for communication purpose
    * @param playerService - player communication service to be used
+   * @param router - router to be used
    */
-  constructor(
-    private playerService: PlayerService,
-    public translate: TranslateService) {
-   }
+  constructor(private playerService: PlayerService,
+    private randomShipPlacementService : RandomShipPlacementService,
+    private gameService : GameService,
+    private router: Router) { }
   
   /**
    * Calls for getPlayers() method on component initialization
    */
   ngOnInit() {
     this.getPlayers();
-  }
-
-  /**
-   * Gets players list from the server;
-   * Can be used to redirect to landing page if list already contains two players
-   */
-  getPlayers(): void {
-    this.playerService.getPlayers()
-    .subscribe(players => this.players = players);
+    this.error_message = ""; 
   }
 
   /**
@@ -49,7 +45,35 @@ export class HomeComponent implements OnInit {
   add(name: string): void {
     name = name.trim();
     if (!name) { return; }
-    this.playerService.addPlayer({name} as Player)
-                      .subscribe(player => {this.players.push(player);});
+    this.playerService.addPlayer(name)
+      .subscribe(
+        any => {
+          this.error_message = '';
+          this.randomShipPlacementService.createNewSetOfMapsForGivenPlayer(name).subscribe(
+          any =>{this.router.navigate(['/waiting-room/' + name])})  
+        }, 
+        error => { 
+          console.log(error); 
+          this.error_message = error;}
+      );
+  }
+
+  delete(): void {
+    this.playerService.deleteAllPlayers()
+      .subscribe(
+        player => {this.players = [];}, 
+        error => { 
+          console.log(error); 
+          this.error_message = error;});
+    this.gameService.deleteAllPlayers();
+  }
+
+  /**
+   * Gets players list from the server;
+   * Can be used to redirect to landing page if list already contains two players
+   */
+  private getPlayers(): void {
+    this.playerService.getPlayers()
+    .subscribe(players => this.players = players);
   }
 }

@@ -7,11 +7,15 @@
     },
 
     "HOME": {
-        "RULES": "Proste zasady gry, opisane w kilku zdaniach.",
+        "RULES": "Zasady:",
+        "ONE": "Gracz wygrywa gdy pozbawi przeciwnika wszystkich staków",
+        "TWO": "Strzelasz dopóki nie spudłujesz!",
+        "THREE": "Jedna gra składa się z jednej rozgrywki",
         "PLAYER_NAME": "Imię gracza",
         "INSTRUCTION": "To jest Twój identyfikator w grze",
         "PLACEHOLDER": "Wprowadź imię",
-        "JOIN": "Dołącz do gry"
+        "JOIN": "Dołącz do gry",
+        "DELETE": "Usuń wszystkich graczy"
     },
 
     "WAITING_ROOM": {
