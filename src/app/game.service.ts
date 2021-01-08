@@ -58,6 +58,12 @@ export class GameService {
     .pipe(catchError(this.handleError));
   }
 
+  deletePlayer(name : string) : Observable<any> {
+    let url: string = `${this.gameUrl}/${name}`;
+    return this.http.delete(url, this.httpOptions) 
+    .pipe(catchError(this.handleError));
+  }
+
   private handleError(error: HttpErrorResponse) {
     return throwError(error.error);
   }

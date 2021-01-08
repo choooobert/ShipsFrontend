@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, timer } from 'rxjs';
@@ -24,7 +24,7 @@ import { ButtonStatus } from '../button-status';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy{
 
   static readonly NUMBER_OF_SQUARES : number = 100;
   static readonly NUMBER_OF_PLAYERS_IN_ROOM = 2;
@@ -105,8 +105,42 @@ export class GameComponent implements OnInit {
     } );
   }
 
-  public giveUp() : void{
-    this.router.navigate(['/landing/loose']);
+  ngOnDestroy(): void{
+    this.subscription.unsubscribe();
+    this.playerService.deletePlayer(this.player.name).subscribe();
+    this.gameService.deletePlayer(this.player.name).subscribe();
+  }
+
+    /**
+   * Changes square status depanding on ship/no ship found - implemantation to be updated (map can only hold statuses hit or miss);
+   * Logic to be moved to backend.
+   * @param id - square identification number
+   */
+  changeStatus(id: number): void {
+    if(this.shootMap[id].status != ButtonStatus.EMPTY){
+      return;
+    }
+    this.gameService.shootPlayer(this.player.name, this.opponent.name, id)
+      .subscribe(shootResponse =>{
+        let cellStatus : ShootMapCellStatus = shootResponse.shootMapCellStatus;
+        const currentButton = this.shootMap[id];
+        if(cellStatus === ShootMapCellStatus.SHOOT_MAP_SHIP_HIT) {
+          currentButton.status = ButtonStatus.HIT;
+          this.showMessage(this.turnMessage, NotificationType.info);
+          this.showMessage(this.hitMessage, NotificationType.success);
+          this.playerTurn = this.player;
+          if(shootResponse.winner){
+            this.router.navigate(['/landing/win']);
+          }
+        } else if(cellStatus === ShootMapCellStatus.SHOOT_MAP_MISS){
+          currentButton.status = ButtonStatus.MISS;
+          this.showMessage(this.enemyTurnMessage, NotificationType.info);
+          this.showMessage(this.missMessage, NotificationType.error);
+          this.playerTurn = this.opponent;
+          this.blockAllShotSquares();
+        }
+        this.shootMap[id] = currentButton;
+    });
   }
 
   private initializeEmptyMaps() : void {
@@ -158,37 +192,6 @@ export class GameComponent implements OnInit {
        });
      }  
 
-  /**
-   * Changes square status depanding on ship/no ship found - implemantation to be updated (map can only hold statuses hit or miss);
-   * Logic to be moved to backend.
-   * @param id - square identification number
-   */
-  changeStatus(id: number): void {
-    if(this.shootMap[id].status != ButtonStatus.EMPTY){
-      return;
-    }
-    this.gameService.shootPlayer(this.player.name, this.opponent.name, id)
-      .subscribe(shootResponse =>{
-        let cellStatus : ShootMapCellStatus = shootResponse.shootMapCellStatus;
-        const currentButton = this.shootMap[id];
-        if(cellStatus === ShootMapCellStatus.SHOOT_MAP_SHIP_HIT) {
-          currentButton.status = ButtonStatus.HIT;
-          this.showMessage(this.turnMessage, NotificationType.info);
-          this.showMessage(this.hitMessage, NotificationType.success);
-          this.playerTurn = this.player;
-          if(shootResponse.winner){
-            this.router.navigate(['/landing/win']);
-          }
-        } else if(cellStatus === ShootMapCellStatus.SHOOT_MAP_MISS){
-          currentButton.status = ButtonStatus.MISS;
-          this.showMessage(this.enemyTurnMessage, NotificationType.info);
-          this.showMessage(this.missMessage, NotificationType.error);
-          this.playerTurn = this.opponent;
-          this.blockAllShotSquares();
-        }
-        this.shootMap[id] = currentButton;
-    });
-  }
 
   /**
    * Calls toast service to send notification
