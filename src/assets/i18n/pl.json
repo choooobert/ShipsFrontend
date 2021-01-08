@@ -29,7 +29,8 @@
         "SHIPS": "Twoje statki",
         "SHOTS": "Statki przeciwnika",
         "PLAYER": "Gracz",
-        "END": "Zakończ grę"
+        "END": "Zakończ grę",
+        "TURN": "Strzela: "
     },
 
     "END": {

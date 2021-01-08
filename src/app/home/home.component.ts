@@ -5,6 +5,7 @@ import { PlayerService } from '../player.service';
 import { Player } from '../player';
 import { GameService } from '../game.service';
 import { RandomShipPlacementService } from '../random-ship-placement.service';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Represents welcome view of the app
@@ -63,7 +64,7 @@ export class HomeComponent implements OnInit {
       );
   }
 
-  assignErrorMessage(error: string) {
+  private assignErrorMessage(error: string) {
     this.translate
         .get(error)
         .subscribe((error: string) => this.error_message = error);

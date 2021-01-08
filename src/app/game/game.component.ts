@@ -113,7 +113,6 @@ export class GameComponent implements OnInit, OnDestroy{
 
     /**
    * Changes square status depanding on ship/no ship found - implemantation to be updated (map can only hold statuses hit or miss);
-   * Logic to be moved to backend.
    * @param id - square identification number
    */
   changeStatus(id: number): void {

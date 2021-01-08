@@ -29,7 +29,8 @@
         "SHIPS": "Your ships",
         "SHOTS": "Enemy ships",
         "PLAYER": "Player info",
-        "END": "End the game"
+        "END": "End the game",
+        "TURN": "Turn: "
     },
 
     "END": {
