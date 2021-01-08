@@ -26,8 +26,9 @@ export class HomeComponent implements OnInit {
    * @param router - router to be used
    */
   constructor(private playerService: PlayerService,
-    private randomShipPlacementService : RandomShipPlacementService,
-    private gameService : GameService,
+    private randomShipPlacementService: RandomShipPlacementService,
+    private gameService: GameService,
+    private translate: TranslateService,
     private router: Router) { }
   
   /**
@@ -54,8 +55,19 @@ export class HomeComponent implements OnInit {
         }, 
         error => { 
           console.log(error); 
-          this.error_message = error;}
+          if (error === 'ROOM_IS_FULL') {
+            this.assignErrorMessage('HOME.FULL');
+          } else {
+            this.assignErrorMessage('HOME.ERROR');
+          }
+        }
       );
+  }
+
+  assignErrorMessage(error: string) {
+    this.translate
+        .get(error)
+        .subscribe((error: string) => this.error_message = error);
   }
 
   delete(): void {

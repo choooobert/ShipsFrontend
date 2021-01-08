@@ -14,7 +14,9 @@
         "INSTRUCTION": "This is your in-game identifier",
         "PLACEHOLDER": "Enter your name",
         "JOIN": "Join the game",
-        "DELETE": "Delete all players"
+        "DELETE": "Delete all players",
+        "FULL": "Room is full, please try again later.",
+        "ERROR": "Error. The name should contain only letters."
     },
 
     "WAITING_ROOM": {
