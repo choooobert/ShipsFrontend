@@ -105,6 +105,10 @@ export class GameComponent implements OnInit {
     } );
   }
 
+  public giveUp() : void{
+    this.router.navigate(['/landing/loose']);
+  }
+
   private initializeEmptyMaps() : void {
     for (let i = 0; i <GameComponent.NUMBER_OF_SQUARES; i++) {
       this.shipMap.push({id : i, status : ButtonStatus.EMPTY_BLOCKED});
@@ -146,7 +150,6 @@ export class GameComponent implements OnInit {
 
  private mapShipMapToArray(shipMap : Map<number, ShipMapCellStatus>) : void{
    Object.keys(shipMap).forEach( key => {
-     let ButtonStatus 
      this.shipMap[key] = {id : parseInt(key),
       //TODO: change it to switch-case
         status : shipMap[key] === ShipMapCellStatus.SHIP_MAP_MISS ? ButtonStatus.MISS :
@@ -190,19 +193,19 @@ export class GameComponent implements OnInit {
   /**
    * Calls toast service to send notification
    */
-  showMessage(message: string, type: NotificationType) {
+  private showMessage(message: string, type: NotificationType) {
     this.translate
         .get(message)
         .subscribe((msg: string) => {this.notificationService.print(msg, type)});
   }
 
-  blockAllShotSquares() : void{
+  private blockAllShotSquares() : void{
     for(let square of this.shootMap){
         square.status = square.status === ButtonStatus.EMPTY ? ButtonStatus.EMPTY_BLOCKED : square.status;
     }
   }
 
-  unlockAllShotSquares(): void{
+  private unlockAllShotSquares(): void{
     for(let square of this.shootMap){
       square.status = square.status === ButtonStatus.EMPTY_BLOCKED ? ButtonStatus.EMPTY : square.status;
     }
