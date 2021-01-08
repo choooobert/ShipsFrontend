@@ -12,7 +12,7 @@ import { LandingComponent } from './landing/landing.component';
  */
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'landing', component: LandingComponent},
+  { path: 'landing/:type', component: LandingComponent},
   { path: 'home', component: HomeComponent },
   { path: 'waiting-room/:name', component: WaitingRoomComponent },
   { path: 'game/:name', component: GameComponent},

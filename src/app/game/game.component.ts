@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -54,6 +54,7 @@ export class GameComponent implements OnInit {
    */
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private playerService: PlayerService,
     public gameService: GameService,
     private notificationService: NotificationService,
@@ -77,8 +78,7 @@ export class GameComponent implements OnInit {
     this.subscription = timer(0, 2000)
     .pipe(switchMap(() => this.gameService.getCurrentGameStatus()))
     .subscribe( currentGameStatus => {
-       //YOUR TURN
-        if(currentGameStatus.playerNameWhoMoves == this.player.name && !currentGameStatus.isPlayerLooser){
+        if(currentGameStatus.playerNameWhoMoves == this.player.name && !currentGameStatus.playerLooser){
           if(!this.isGameSetToPLayersTurn)
           {
             this.showMessage(this.turnMessage, NotificationType.info);
@@ -88,8 +88,7 @@ export class GameComponent implements OnInit {
             this.isFirstTurn = false;
           }
         }
-        //OPPONENT'S TURN
-        else if(currentGameStatus.playerNameWhoMoves == this.opponent.name && !currentGameStatus.isPlayerLooser){
+        else if(currentGameStatus.playerNameWhoMoves == this.opponent.name && !currentGameStatus.playerLooser){
           this.blockAllShotSquares();
           this.isGameSetToPLayersTurn = false;
           if(this.isFirstTurn){
@@ -97,12 +96,12 @@ export class GameComponent implements OnInit {
             this.isFirstTurn = false;
           }
         }
-        //YOU WIN BECAUSE OPPONENT LEFT
-        else if(currentGameStatus.playerNameWhoMoves == this.opponent.name && currentGameStatus.isPlayerLooser){
+        else if(currentGameStatus.playerNameWhoMoves == this.opponent.name && currentGameStatus.playerLooser){
+          this.router.navigate(['/landing/win']);
         }
-
-        else if(currentGameStatus.playerNameWhoMoves == this.player.name && currentGameStatus.isPlayerLooser){
-          //OPPONENT WINS
+        else if(currentGameStatus.playerNameWhoMoves == this.player.name && currentGameStatus.playerLooser){
+          console.log("You loose");
+          this.router.navigate(['/landing/loose']);
         }
         this.playerTurn = {name : currentGameStatus.playerNameWhoMoves};
     } );
@@ -183,6 +182,10 @@ export class GameComponent implements OnInit {
           this.showMessage(this.turnMessage, NotificationType.info);
           this.showMessage(this.hitMessage, NotificationType.success);
           this.playerTurn = this.player;
+          if(shootResponse.winner){
+            console.log("In winner condition");
+            this.router.navigate(['/landing/win']);
+          }
         } else if(cellStatus === ShootMapCellStatus.SHOOT_MAP_MISS){
           currentButton.status = ButtonStatus.MISS;
           this.showMessage(this.enemyTurnMessage, NotificationType.info);
