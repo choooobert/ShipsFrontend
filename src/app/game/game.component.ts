@@ -11,7 +11,8 @@ import { GameService } from '../game.service';
 import { ShootMapCellStatus } from '../shoot-map-cell-status.enum';
 import { ShipMapCellStatus } from '../ship-map-cell-status.enum';
 import { NotificationService } from '../notification.service';
-import { NotificationMessage, NotificationType } from '../notification.message';
+import { NotificationType } from '../notification.message';
+import { ButtonStatus } from '../button-status';
 
 
 /**
@@ -25,6 +26,8 @@ import { NotificationMessage, NotificationType } from '../notification.message';
 })
 export class GameComponent implements OnInit {
 
+  static readonly NUMBER_OF_SQUARES : number = 100;
+  static readonly NUMBER_OF_PLAYERS_IN_ROOM = 2;
   player: Player = {name : ''};
   playerTurn : Player = {name : ''};
   private opponent: Player = {name : ''};
@@ -32,7 +35,7 @@ export class GameComponent implements OnInit {
   private subscription: Subscription;
 
   private isGameSetToPLayersTurn : boolean = false;
-  private isFirstRound : boolean = true;
+  private isFirstTurn : boolean = true;
 
 
   shipMap: Square[] = [];
@@ -82,15 +85,16 @@ export class GameComponent implements OnInit {
             this.getShipMap();
             this.unlockAllShotSquares();
             this.isGameSetToPLayersTurn = true;
+            this.isFirstTurn = false;
           }
         }
         //OPPONENT'S TURN
         else if(currentGameStatus.playerNameWhoMoves == this.opponent.name && !currentGameStatus.isPlayerLooser){
           this.blockAllShotSquares();
           this.isGameSetToPLayersTurn = false;
-          if(this.isFirstRound){
+          if(this.isFirstTurn){
             this.showMessage(this.enemyTurnMessage, NotificationType.info);
-            this.isFirstRound = false;
+            this.isFirstTurn = false;
           }
         }
         //YOU WIN BECAUSE OPPONENT LEFT
@@ -105,7 +109,7 @@ export class GameComponent implements OnInit {
   }
 
   private initializeEmptyMaps() : void{
-    for (let i = 1; i <=100; i++) {
+    for (let i = 0; i <GameComponent.NUMBER_OF_SQUARES; i++) {
       this.shipMap.push({id : i, status : 0});
       this.shootMap.push({id : i, status : 0});
     }
@@ -124,10 +128,9 @@ export class GameComponent implements OnInit {
     this.playerService.getPlayers()
     .subscribe(
       players => {
-        let playerIndex : number =-1;
-        for(let index in [0 , 1]){
-          if(players[parseInt(index)].name != this.player.name){
-            this.opponent = players[parseInt(index)];
+        for(let index =0; index < GameComponent.NUMBER_OF_PLAYERS_IN_ROOM; ++index){
+          if(players[index].name != this.player.name){
+            this.opponent = players[index];
           }
         }
       });
@@ -147,14 +150,14 @@ export class GameComponent implements OnInit {
 
  private mapShootMapToArray(shootMap : Map<number, ShootMapCellStatus>) : void{
    Object.keys(shootMap).forEach(key => {
-     this.shootMap[key] = {id : parseInt(key)+1,
+     this.shootMap[key] = {id : parseInt(key),
         status : shootMap[key] === ShootMapCellStatus.SHOOT_MAP_MISS ? 2 :1};
      });
  }
 
  private mapShipMapToArray(shipMap : Map<number, ShipMapCellStatus>) : void{
    Object.keys(shipMap).forEach( key => {
-     this.shipMap[key] = {id : parseInt(key)+1,
+     this.shipMap[key] = {id : parseInt(key),
         status : shipMap[key] === ShipMapCellStatus.SHIP_MAP_MISS ? 2 :
         shipMap[key] === ShipMapCellStatus.SHIP_MAP_SHIP ? 3 :1};
        });
@@ -166,29 +169,29 @@ export class GameComponent implements OnInit {
    * @param id - square identification number
    */
   changeStatus(id: number): void {
-    if(this.shootMap[id - 1].status != 0){
+    if(this.shootMap[id].status != ButtonStatus.EMPTY){
       return;
     }
-    this.gameService.shootPlayer(this.player.name, this.opponent.name, id-1)
+    this.gameService.shootPlayer(this.player.name, this.opponent.name, id)
       .subscribe(shootResponse =>{
         let cellStatus : ShootMapCellStatus = shootResponse.shootMapCellStatus;
         console.log("Changing cell status");
-        const currentButton = this.shootMap[id - 1];
+        const currentButton = this.shootMap[id];
         console.log("Before: ", currentButton.status);
         if(cellStatus === ShootMapCellStatus.SHOOT_MAP_SHIP_HIT) {
-          currentButton.status = 1;
+          currentButton.status = ButtonStatus.HIT;
           this.showMessage(this.turnMessage, NotificationType.info);
           this.showMessage(this.hitMessage, NotificationType.success);
           this.playerTurn = this.player;
         } else if(cellStatus === ShootMapCellStatus.SHOOT_MAP_MISS){
-          currentButton.status = 2;
+          currentButton.status = ButtonStatus.MISS;
           this.showMessage(this.enemyTurnMessage, NotificationType.info);
           this.showMessage(this.missMessage, NotificationType.error);
           this.playerTurn = this.opponent;
           this.blockAllShotSquares();
         }
-        this.shootMap[id-1] = currentButton;
-        console.log("After: ", this.shootMap[id-1].status);
+        this.shootMap[id] = currentButton;
+        console.log("After: ", this.shootMap[id].status);
     });
   }
 
@@ -203,13 +206,13 @@ export class GameComponent implements OnInit {
 
   blockAllShotSquares() : void{
     for(let square of this.shootMap){
-        square.status = square.status === 0 ? 4 : square.status;
+        square.status = square.status === ButtonStatus.EMPTY ? ButtonStatus.EMPTY_BLOCKED : square.status;
     }
   }
 
   unlockAllShotSquares(): void{
     for(let square of this.shootMap){
-      square.status = square.status === 4 ? 0 : square.status;
+      square.status = square.status === ButtonStatus.EMPTY_BLOCKED ? ButtonStatus.EMPTY : square.status;
     }
   }
 }

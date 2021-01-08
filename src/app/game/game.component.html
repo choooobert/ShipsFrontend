@@ -11,7 +11,10 @@
           <div *ngFor="let square of shipMap">
             <mat-grid-tile>
               <button mat-mini-fab color="" 
-                [ngClass]="{'button-miss': square.status==2, 'button-hit': square.status==1, 'button-ship': square.status==3}">
+                [ngClass]="{'button-miss': square.status==2,
+                 'button-hit': square.status==1,
+                  'button-ship': square.status==3,
+                  'button-blocked': square.status==0}">
               </button>
             </mat-grid-tile>
           </div>
@@ -30,8 +33,12 @@
         <mat-grid-list cols="10" rowHeight="1:1">
           <div *ngFor="let square of shootMap">
             <mat-grid-tile>
-              <button mat-mini-fab color="" [ngClass]="{'button-miss' : square.status==2, 'button-hit': square.status==1, 'button-blocked' : square.status==4}" 
-                                              (click)="status = changeStatus(square.id)">
+              <button mat-mini-fab color="" 
+              [ngClass]="{'button-miss' : square.status==2,
+               'button-hit': square.status==1,
+                'button' : square.status==4,
+                 'button-blocked' : square.status==0}" 
+                  (click)="status = changeStatus(square.id)">
               </button>
             </mat-grid-tile>
           </div>
