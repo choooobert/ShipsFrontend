@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 
-
 import {throwError } from 'rxjs';
 
 /**
@@ -30,7 +29,6 @@ export class RandomShipPlacementService {
     return this.http.post(url, this.httpOptions) 
       .pipe(catchError(this.handleError));
   }
-
 
   private handleError(error: HttpErrorResponse) {
     return throwError(error.error);
