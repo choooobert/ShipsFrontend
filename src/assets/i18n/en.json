@@ -2,16 +2,21 @@
     "APP": {
         "SELECT": "Select language: ",
         "WELCOME": "Ahoy Seadogs!",
-        "MENU": "Menu (development purpose only):",
         "TITLE": "Ships: The Game"
     },
 
     "HOME": {
-        "RULES": "Simple rules should be placed in here.",
+        "RULES": "Rules:",
+        "ONE": "Player wins if opponent is out of ships",
+        "TWO": "You shoot until you miss!",
+        "THREE": "One game consists of one match",
         "PLAYER_NAME": "Player name",
         "INSTRUCTION": "This is your in-game identifier",
         "PLACEHOLDER": "Enter your name",
-        "JOIN": "Join the game"
+        "JOIN": "Join the game",
+        "DELETE": "Delete all players",
+        "FULL": "Room is full, please try again later.",
+        "ERROR": "Error. The name should contain only letters."
     },
 
     "WAITING_ROOM": {
@@ -24,7 +29,8 @@
         "SHIPS": "Your ships",
         "SHOTS": "Enemy ships",
         "PLAYER": "Player info",
-        "END": "End the game"
+        "END": "End the game",
+        "TURN": "Turn: "
     },
 
     "END": {

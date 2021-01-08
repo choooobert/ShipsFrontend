@@ -1,8 +1,6 @@
 /**
-* Represents player interface with unique id number;
-* To be updated to contain only name field
+* Represents player interface with unique name;
 */
 export interface Player {
-    id: number;
     name: string;
 }

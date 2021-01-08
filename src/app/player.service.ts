@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
   
-import { Observable, of } from 'rxjs';
-  
+import { Observable, throwError } from 'rxjs';
+
 import { Player } from './player';
 
 /**
@@ -14,7 +14,7 @@ import { Player } from './player';
   providedIn: 'root'
 })
 export class PlayerService {
-  private playersUrl = 'api/players';  // URL to web api
+  private playersUrl = 'https://ships-room-service-backend.herokuapp.com/room';  // URL to web api
   
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -28,39 +28,39 @@ export class PlayerService {
   
   /** GET players from the server */
   getPlayers(): Observable<Player[]> {
-    return this.http.get<Player[]>(this.playersUrl)
-                    .pipe(catchError(this.handleError<Player[]>('getPlayers', []))
-      );
-  }
-
-  /** GET player by id. Will 404 if id not found 
-   * To be updated to retrieve player by name
-   */
-  getPlayer(id: number): Observable<Player> {
-    const url = `${this.playersUrl}/${id}`;
-    return this.http.get<Player>(url)
-                    .pipe(catchError(this.handleError<Player>(`getPlayer id=${id}`)));
+    return this.http.get<Player[]>(this.playersUrl, this.httpOptions)
+                    .pipe(catchError(this.handleError));
   }
 
   /**
    * POST: add a new player to the server
    * @param player - player to be added
    */
-  addPlayer(player: Player): Observable<Player> {
-    return this.http.post<Player>(this.playersUrl, player, this.httpOptions)
-                    .pipe(catchError(this.handleError<Player>('addPlayer')));
+  addPlayer(name: string): Observable<Player> {
+    let url: string = `${this.playersUrl}/${name}`;
+    return this.http.post<Player>(url, this.httpOptions)
+    .pipe(catchError(this.handleError));
   }
   
   /**
    * DELETE: deletes the player from the server
    * @param player - player or player id to be removed from the server (to be updated when player definition changes)
    */
-  deletePlayer(player: Player | number): Observable<Player> {
-    const id = typeof player === 'number' ? player : player.id;
-    const url = `${this.playersUrl}/${id}`;
+  deletePlayer(player: Player | string): Observable<Player> {
+    const name : string= typeof player === 'string' ? player : player.name;
+    const url = `${this.playersUrl}/${name}`;
 
     return this.http.delete<Player>(url, this.httpOptions)
-                    .pipe(catchError(this.handleError<Player>('deletePlayer')));
+                    .pipe(catchError(this.handleError));
+  }
+
+  /**
+   * DELETE: delete all the players from the server
+   */
+  deleteAllPlayers(): Observable<Player[]> {
+    const url = `${this.playersUrl}`;
+    return this.http.delete<Player[]>(url, this.httpOptions)
+        .pipe(catchError(this.handleError));
   }
 
   /**
@@ -69,14 +69,7 @@ export class PlayerService {
   * @param operation - name of the operation that failed
   * @param result - optional value to return as the observable result
   */
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+  private handleError(error: HttpErrorResponse) {
+    return throwError(error.error);
   }
 }

@@ -2,16 +2,21 @@
     "APP": {
         "SELECT": "Wybierz język: ",
         "WELCOME": "Ahoj Psubraty!",
-        "MENU": "Menu (tylko do celów rozwoju aplikacji):",
         "TITLE": "Statki: Gra"
     },
 
     "HOME": {
-        "RULES": "Proste zasady gry, opisane w kilku zdaniach.",
+        "RULES": "Zasady:",
+        "ONE": "Gracz wygrywa gdy pozbawi przeciwnika wszystkich staków",
+        "TWO": "Strzelasz dopóki nie spudłujesz!",
+        "THREE": "Jedna gra składa się z jednej rozgrywki",
         "PLAYER_NAME": "Imię gracza",
         "INSTRUCTION": "To jest Twój identyfikator w grze",
         "PLACEHOLDER": "Wprowadź imię",
-        "JOIN": "Dołącz do gry"
+        "JOIN": "Dołącz do gry",
+        "DELETE": "Usuń wszystkich graczy",
+        "FULL": "Pokój zajęty. Spróbuj ponownie później.",
+        "ERROR": "Błąd. Imię powinno się składać z samych liter."
     },
 
     "WAITING_ROOM": {
@@ -24,7 +29,8 @@
         "SHIPS": "Twoje statki",
         "SHOTS": "Statki przeciwnika",
         "PLAYER": "Gracz",
-        "END": "Zakończ grę"
+        "END": "Zakończ grę",
+        "TURN": "Strzela: "
     },
 
     "END": {
