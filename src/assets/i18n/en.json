@@ -2,7 +2,6 @@
     "APP": {
         "SELECT": "Select language: ",
         "WELCOME": "Ahoy Seadogs!",
-        "MENU": "Menu (development purpose only):",
         "TITLE": "Ships: The Game"
     },
 

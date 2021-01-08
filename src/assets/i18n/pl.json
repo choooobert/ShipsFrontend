@@ -2,7 +2,6 @@
     "APP": {
         "SELECT": "Wybierz język: ",
         "WELCOME": "Ahoj Psubraty!",
-        "MENU": "Menu (tylko do celów rozwoju aplikacji):",
         "TITLE": "Statki: Gra"
     },
 
