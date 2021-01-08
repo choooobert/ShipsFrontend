@@ -111,7 +111,7 @@ Example response:
 
 [source]
 ----
-           Status = 200
+           Status = 204
     Error message = null
           Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json"]
      Content type = application/json
@@ -137,7 +137,7 @@ Example response:
 
 [source]
 ----
-           Status = 200
+           Status = 204
     Error message = null
           Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json"]
      Content type = application/json
@@ -179,7 +179,7 @@ Example response:
 
 [source]
 ----
-           Status = 200
+           Status = 201
     Error message = null
           Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", Location:"http://localhost/maps/DUMMY_NAME_1-vs-DUMMY_NAME_2/10"]
      Content type = application/json
@@ -225,7 +225,7 @@ Example response:
 
 [source]
 ----
-           Status = 200
+           Status = 201
     Error message = null
           Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json", Location:"http://localhost/maps"]
      Content type = application/json
@@ -278,7 +278,7 @@ Example response:
 
 ===== DELETE
 
-clean all players' maps.
+Clean all players' maps.
 
 It should be used when a winner is evaluated and the game is over.
 
@@ -291,7 +291,30 @@ Example response:
 
 [source]
 ----
-           Status = 200
+           Status = 204
+    Error message = null
+          Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json"]
+     Content type = application/json
+             Body =
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+----
+
+===== DELETE
+
+Clean all players' maps and set player who lost. It should be used when one of players left during the game.
+
+[source]
+----
+DELETE /map/{name} HTTP/1.1
+----
+
+Example response:
+
+[source]
+----
+           Status = 204
     Error message = null
           Headers = [Vary:"Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers", Content-Type:"application/json"]
      Content type = application/json
@@ -384,6 +407,13 @@ Example response:
     Forwarded URL = null
    Redirected URL = null
           Cookies = []
+----
+
+==== Resource
+
+[source]
+----
+/map/gamestatus
 ----
 
 ===== GET
