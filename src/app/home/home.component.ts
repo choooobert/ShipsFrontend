@@ -3,7 +3,6 @@ import {Router} from '@angular/router';
 
 import { PlayerService } from '../player.service';
 import { Player } from '../player';
-import { TranslateService } from '@ngx-translate/core';
 import { GameService } from '../game.service';
 import { RandomShipPlacementService } from '../random-ship-placement.service';
 

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 
-
 import { Observable, throwError } from 'rxjs';
 
 import { ShootMapCellStatus } from './shoot-map-cell-status.enum';
@@ -54,9 +53,14 @@ export class GameService {
     .pipe(catchError(this.handleError));
   }
 
-
   deleteAllPlayers() : void {
     this.http.delete(this.gameUrl, this.httpOptions) 
+    .pipe(catchError(this.handleError));
+  }
+
+  deletePlayer(name : string) : Observable<any> {
+    let url: string = `${this.gameUrl}/${name}`;
+    return this.http.delete(url, this.httpOptions) 
     .pipe(catchError(this.handleError));
   }
 

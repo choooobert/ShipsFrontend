@@ -29,7 +29,7 @@ export class LandingComponent implements OnInit {
         .get('TOAST.WIN')
         .subscribe((msg: string) => {this.notificationService.print(msg, NotificationType.warning)});
     }
-    else if(type == "loose"){
+    else if(type === "loose"){
       this.translate
         .get('TOAST.LOOSE')
         .subscribe((msg: string) => {this.notificationService.print(msg, NotificationType.warning)});
