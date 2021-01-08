@@ -57,6 +57,8 @@ export class HomeComponent implements OnInit {
           console.log(error); 
           if (error === 'ROOM_IS_FULL') {
             this.assignErrorMessage('HOME.FULL');
+          } else if (error === 'NICKNAME_DUPLICATION') {
+            this.assignErrorMessage('HOME.NICKNAME_DUPLICATION');
           } else {
             this.assignErrorMessage('HOME.ERROR');
           }

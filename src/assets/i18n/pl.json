@@ -16,6 +16,7 @@
         "JOIN": "Dołącz do gry",
         "DELETE": "Usuń wszystkich graczy",
         "FULL": "Pokój zajęty. Spróbuj ponownie później.",
+        "NICKNAME_DUPLICATION": "Podany pseudonim jest zajęty! Spróbuj ponownie!",
         "ERROR": "Błąd. Imię powinno się składać z samych liter."
     },
 
