@@ -19,7 +19,7 @@ import { ButtonStatus } from '../button-status';
  * Represents game view of the app, contains map components in:
  * @see game.component.html
  */
-@Component({ 
+@Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
