@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Ships": {
+    "ShipsFrontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,14 +13,14 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/Ships",
+            "outputPath": "dist/ShipsFrontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": [
-              "src/assets/img/favicon.ico",
+              "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
@@ -62,18 +62,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Ships:build"
+            "browserTarget": "ShipsFrontend:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "Ships:build:production"
+              "browserTarget": "ShipsFrontend:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Ships:build"
+            "browserTarget": "ShipsFrontend:build"
           }
         },
         "test": {
@@ -110,11 +110,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "Ships:serve"
+            "devServerTarget": "ShipsFrontend:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "Ships:serve:production"
+              "devServerTarget": "ShipsFrontend:serve:production"
             }
           }
         },
@@ -125,7 +125,7 @@
       }
     }
   },
-  "defaultProject": "Ships",
+  "defaultProject": "ShipsFrontend",
   "cli": {
     "analytics": false
   }
