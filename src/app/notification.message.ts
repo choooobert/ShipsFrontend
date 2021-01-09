@@ -1,3 +1,7 @@
+/**
+ * Represents the notification to be handled by toastr.
+ */
+
 export class NotificationMessage {
     message: string;
     type: NotificationType

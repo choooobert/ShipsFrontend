@@ -48,11 +48,11 @@ export class HomeComponent implements OnInit {
     if (!name) { return; }
     this.playerService.addPlayer(name)
       .subscribe(
-        any => {
+        () => {
           this.error_message = '';
           this.randomShipPlacementService.createNewSetOfMapsForGivenPlayer(name).subscribe(
-          any =>{this.router.navigate(['/waiting-room/' + name])})  
-        }, 
+          () =>{this.router.navigate(['/waiting-room/' + name])})  
+        },
         error => { 
           console.log(error); 
           if (error === 'ROOM_IS_FULL') {
@@ -66,20 +66,26 @@ export class HomeComponent implements OnInit {
       );
   }
 
+
+  /**
+   * Delete all players in the frontend, RoomService and GameService
+   * @param name - player name
+   */
+  delete(): void {
+    this.playerService.deleteAllPlayers()
+      .subscribe(
+        () => {this.players = [];}, 
+        error => { 
+          console.log(error); 
+          this.error_message = error;});
+    this.gameService.deleteAllPlayers().subscribe();
+  }
+
+
   private assignErrorMessage(error: string) {
     this.translate
         .get(error)
         .subscribe((error: string) => this.error_message = error);
-  }
-
-  delete(): void {
-    this.playerService.deleteAllPlayers()
-      .subscribe(
-        player => {this.players = [];}, 
-        error => { 
-          console.log(error); 
-          this.error_message = error;});
-    this.gameService.deleteAllPlayers();
   }
 
   /**

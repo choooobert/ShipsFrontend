@@ -12,7 +12,7 @@ import { ShootMapCellStatus } from '../shoot-map-cell-status.enum';
 import { ShipMapCellStatus } from '../ship-map-cell-status.enum';
 import { NotificationService } from '../notification.service';
 import { NotificationType } from '../notification.message';
-import { ButtonStatus } from '../button-status';
+import { ButtonStatus } from '../button-status.enum';
 
 
 /**
@@ -64,9 +64,6 @@ export class GameComponent implements OnInit, OnDestroy{
       this.enemyTurnMessage = 'TOAST.ENEMY_TURN';
    }
 
-  /**
-   * Calls for getPlayer() method on component initialization
-   */
   ngOnInit(): void {
     this.player = {name : this.route.snapshot.paramMap.get('name')};
     this.getOpponent();
@@ -111,8 +108,8 @@ export class GameComponent implements OnInit, OnDestroy{
     this.gameService.deletePlayer(this.player.name).subscribe();
   }
 
-    /**
-   * Changes square status depanding on ship/no ship found - implemantation to be updated (map can only hold statuses hit or miss);
+  /**
+   * Handles the shoot and its response. Changes the button status.
    * @param id - square identification number
    */
   changeStatus(id: number): void {
@@ -191,10 +188,6 @@ export class GameComponent implements OnInit, OnDestroy{
        });
      }  
 
-
-  /**
-   * Calls toast service to send notification
-   */
   private showMessage(message: string, type: NotificationType) {
     this.translate
         .get(message)

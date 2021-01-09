@@ -4,9 +4,8 @@ import { NotificationService } from './notification.service';
 import { TranslateService } from '@ngx-translate/core';
 
 /**
- * Main view of the app;
- * Encapsulates other components;
- * Contains developer menu - to be removed for final release @see app.component.html
+ * Main view of the app.
+ * Encapsulates other components.
  */
 @Component({
   selector: 'app-root',
