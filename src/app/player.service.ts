@@ -14,7 +14,7 @@ import { Player } from './player';
   providedIn: 'root'
 })
 export class PlayerService {
-  private playersUrl = 'https://ships-room-service-backend.herokuapp.com/room';  // URL to web api
+  private playersUrl = 'https://ships-room-service-backend.herokuapp.com/room';
   
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -44,10 +44,9 @@ export class PlayerService {
   
   /**
    * DELETE: deletes the player from the server
-   * @param player - player or player id to be removed from the server (to be updated when player definition changes)
+   * @param name - player name to be removed from the server
    */
-  deletePlayer(player: Player | string): Observable<Player> {
-    const name : string= typeof player === 'string' ? player : player.name;
+  deletePlayer(name: string): Observable<Player> {
     const url = `${this.playersUrl}/${name}`;
 
     return this.http.delete<Player>(url, this.httpOptions)

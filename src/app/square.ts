@@ -1,8 +1,7 @@
-import { ButtonStatus } from "./button-status";
+import { ButtonStatus } from "./button-status.enum";
 
 /**
- * Represents square on the grid map
- * Status represents (0: no-ship, 1: ship, 2: hit, 3: miss, 4: blocked);
+ * Represents square on the grid map.
  */
 export interface Square {
     id: number;
