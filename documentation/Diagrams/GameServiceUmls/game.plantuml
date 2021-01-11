@@ -1,0 +1,206 @@
+@startuml
+
+title Class Diagram of <b>com.ships.game</b> package \n
+
+    namespace com.ships.game {
+        class com.ships.game.CurrentGameStatus {
+            - isPlayerLooser : boolean
+            - playerNameWhoMoves : String
+            + CurrentGameStatus()
+            + equals()
+            + getPlayerNameWhoMoves()
+            + hashCode()
+            + isPlayerLooser()
+            + toString()
+        }
+    }
+
+
+    namespace com.ships.game {
+        enum ErrorStatus {
+          ILLEGAL_CELL_INDEX
+          SHOOT_TO_HIT_SHIP
+          SHOOT_TO_MISS
+        }
+    }
+
+
+    namespace com.ships.game {
+        class com.ships.game.GameMaps {
+            {static} - BOARD_DIMENSION : int
+            - numberOfAllShipsCells : int
+            - shipMap : Map<Integer, ShipMapCellStatus>
+            - shootMap : Map<Integer, ShootMapCellStatus>
+            + getShipMap()
+            + getShootMap()
+            ~ GameMaps()
+            ~ basicShootModification()
+            ~ isLooser()
+            - checkCellIndexRange()
+        }
+    }
+
+
+    namespace com.ships.game {
+        class com.ships.game.GameMapsContainer {
+            - isLooserDetermined : boolean
+            - playerMaps : Map<Player, GameMaps>
+            ~ GameMapsContainer()
+            ~ basicShootMapModification()
+            ~ clearAll()
+            ~ fetchCurrentGameStatus()
+            ~ getPlayerShipMap()
+            ~ getPlayerShootMap()
+            ~ indicateLooser()
+            ~ prepareMapsForPlayer()
+        }
+    }
+
+
+    namespace com.ships.game {
+        class com.ships.game.GameMapsController {
+            + GameMapsController()
+            ~ clearAllPlayersMaps()
+            ~ createNewSetOfMapsForGivenPlayer()
+            ~ fetchGameStatus()
+            ~ fetchShipMap()
+            ~ fetchShootMap()
+            ~ resetParams()
+            ~ shootPlayer()
+        }
+    }
+
+
+    namespace com.ships.game {
+        class com.ships.game.IllegalCellIndexValueException {
+            ~ IllegalCellIndexValueException()
+        }
+    }
+
+
+    namespace com.ships.game {
+        class com.ships.game.Player {
+            - name : String
+            + equals()
+            + getName()
+            + hashCode()
+            + toString()
+            ~ Player()
+        }
+    }
+
+
+    namespace com.ships.game {
+        class com.ships.game.PlayerTurnDeterminator {
+            {static} - NUMBER_OF_PLAYERS_IN_ROOM : int
+            - random : Random
+            + getPlayerWhoMoves()
+            + setPlayerWhoMoves()
+            ~ PlayerTurnDeterminator()
+            ~ drawPlayer()
+        }
+    }
+
+
+    namespace com.ships.game {
+        class com.ships.game.PlayerWithShipMap {
+            - shipList : List<Ship>
+            + equals()
+            + getPlayer()
+            + getShipList()
+            + hashCode()
+            + toString()
+            ~ PlayerWithShipMap()
+        }
+    }
+
+
+    namespace com.ships.game {
+        class com.ships.game.Ship {
+            - isVertical : boolean
+            - shipCellIndices : List<Integer>
+            + equals()
+            + getShipCellIndices()
+            + hashCode()
+            + isVertical()
+            + toString()
+            ~ Ship()
+        }
+    }
+
+
+    namespace com.ships.game {
+        enum ShipMapCellStatus {
+          SHIP_MAP_MISS
+          SHIP_MAP_SHIP
+          SHIP_MAP_SHIP_HIT
+        }
+    }
+
+
+    namespace com.ships.game {
+        class com.ships.game.ShipMapWithRoundInfo {
+            - isPLayersTurn : boolean
+            - isPlayerLooser : boolean
+            - shipMap : Map<Integer, ShipMapCellStatus>
+            + ShipMapWithRoundInfo()
+            + equals()
+            + getShipMap()
+            + hashCode()
+            + isPLayersTurn()
+            + isPlayerLooser()
+            + toString()
+        }
+    }
+
+
+    namespace com.ships.game {
+        enum ShootMapCellStatus {
+          SHOOT_MAP_MISS
+          SHOOT_MAP_SHIP_HIT
+        }
+    }
+
+
+    namespace com.ships.game {
+        class com.ships.game.ShootResponse {
+            - isWinner : boolean
+            + ShootResponse()
+            + equals()
+            + getShootMapCellStatus()
+            + hashCode()
+            + isWinner()
+            + toString()
+        }
+    }
+
+
+    namespace com.ships.game {
+        class com.ships.game.ShootToHitShipException {
+            ~ ShootToHitShipException()
+        }
+    }
+
+
+    namespace com.ships.game {
+        class com.ships.game.ShootToMissException {
+            ~ ShootToMissException()
+        }
+    }
+
+
+  com.ships.game.GameMapsContainer o-- com.ships.game.PlayerTurnDeterminator : playerTurnDeterminator
+  com.ships.game.GameMapsController o-- com.ships.game.GameMapsContainer : gameMapsContainer
+  com.ships.game.PlayerTurnDeterminator o-- com.ships.game.Player : playerWhoMoves
+  com.ships.game.PlayerWithShipMap o-- com.ships.game.Player : player
+  com.ships.game.ShootResponse o-- com.ships.game.ShootMapCellStatus : shootMapCellStatus
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
