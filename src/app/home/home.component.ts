@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
   }
 
   /**
-   * Adds new player to the list and sends the player to the serverw
+   * Adds new player to the list and sends the player to the server
    * @param name - player name
    */
   add(name: string): void {
