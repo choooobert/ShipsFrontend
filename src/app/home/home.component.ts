@@ -6,6 +6,7 @@ import { Player } from '../player';
 import { GameService } from '../game.service';
 import { RandomShipPlacementService } from '../random-ship-placement.service';
 import { TranslateService } from '@ngx-translate/core';
+import { StatusWithToken } from '../StatusWithToken';
 
 /**
  * Represents welcome view of the app
@@ -35,7 +36,6 @@ export class HomeComponent implements OnInit {
    * Calls for getPlayers() method on component initialization
    */
   ngOnInit() {
-    this.getPlayers();
     this.error_message = ""; 
   }
 
@@ -48,10 +48,11 @@ export class HomeComponent implements OnInit {
     if (!name) { return; }
     this.playerService.addPlayer(name)
       .subscribe(
-        () => {
+        (response: StatusWithToken) => {
+          sessionStorage.setItem('JSESSIONID', response.token);
           this.error_message = '';
           this.randomShipPlacementService.createNewSetOfMapsForGivenPlayer(name).subscribe(
-          () =>{this.router.navigate(['/waiting-room/' + name])})  
+              () =>{this.router.navigate(['/waiting-room/' + name])})  
         },
         error => { 
           console.log(error); 
@@ -59,6 +60,8 @@ export class HomeComponent implements OnInit {
             this.assignErrorMessage('HOME.FULL');
           } else if (error === 'NICKNAME_DUPLICATION') {
             this.assignErrorMessage('HOME.NICKNAME_DUPLICATION');
+          } else if (error === 'DUPLICATED_SESSION') {
+            this.assignErrorMessage('HOME.DUPLICATED_SESSION');
           } else {
             this.assignErrorMessage('HOME.ERROR');
           }

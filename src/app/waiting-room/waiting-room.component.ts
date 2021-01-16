@@ -50,9 +50,11 @@ export class WaitingRoomComponent implements OnInit {
 
   private assignPlayersInRoom(playersInRoom: Player[]) {
     this.playersInRoom = playersInRoom;
+    if(0 == playersInRoom.length) {
+      this.router.navigate(['/home']);
+    }
     if (this.MAX_NUMBER_OF_PLAYERS_IN_ROOM == playersInRoom.length) {
       this.router.navigate(['/game/' + this.sessionPlayer.name]);
     }
   }
-  
 }
