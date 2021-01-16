@@ -16,6 +16,7 @@
         "JOIN": "Dołącz do gry",
         "FULL": "Pokój zajęty. Spróbuj ponownie później.",
         "NICKNAME_DUPLICATION": "Podany pseudonim jest zajęty! Spróbuj ponownie!",
+        "DUPLICATED_SESSION": "Duplikat sesji!",
         "ERROR": "Błąd. Imię powinno się składać z samych liter."
     },
 
