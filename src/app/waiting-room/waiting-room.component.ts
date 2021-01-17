@@ -39,8 +39,7 @@ export class WaitingRoomComponent implements OnInit {
    * Calls for getPlayers() method on component initialization and assigns players to the room
    */
   ngOnInit() {
-    this.subscription = timer(0, 2000)
-      .pipe(switchMap(() => this.playerService.getPlayers()))
+    this.subscription = timer(0, 2000).pipe(switchMap(() => this.playerService.getPlayers()))
       .subscribe(playersInRoom => this.assignPlayersInRoom(playersInRoom));
   }
 
@@ -54,6 +53,7 @@ export class WaitingRoomComponent implements OnInit {
       this.router.navigate(['/home']);
     }
     if (this.MAX_NUMBER_OF_PLAYERS_IN_ROOM == playersInRoom.length) {
+      localStorage.setItem('players', JSON.stringify(playersInRoom));
       this.router.navigate(['/game/' + this.sessionPlayer.name]);
     }
   }

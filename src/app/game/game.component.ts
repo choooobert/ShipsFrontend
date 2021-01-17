@@ -5,7 +5,6 @@ import { Subscription, timer } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { Player } from '../player';
-import { PlayerService } from '../player.service';
 import { Square } from '../square';
 import { GameService } from '../game.service';
 import { ShootMapCellStatus } from '../shoot-map-cell-status.enum';
@@ -13,7 +12,6 @@ import { ShipMapCellStatus } from '../ship-map-cell-status.enum';
 import { NotificationService } from '../notification.service';
 import { NotificationType } from '../notification.message';
 import { ButtonStatus } from '../button-status.enum';
-
 
 /**
  * Represents game view of the app, contains map components in:
@@ -24,22 +22,22 @@ import { ButtonStatus } from '../button-status.enum';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
-export class GameComponent implements OnInit, OnDestroy{
+export class GameComponent implements OnInit, OnDestroy {
 
-  static readonly NUMBER_OF_SQUARES : number = 100;
+  static readonly NUMBER_OF_SQUARES: number = 100;
   static readonly NUMBER_OF_PLAYERS_IN_ROOM = 2;
-  
-  player: Player = {name : ''};
-  playerTurn : Player = {name : ''};
+
+  player: Player = { name: '' };
+  playerTurn: Player = { name: '' };
   shipMap: Square[] = [];
   shootMap: Square[] = [];
 
-  private opponent: Player = {name : ''};
+  private opponent: Player = { name: '' };
   private subscription: Subscription;
- 
-  private isGameSetToPLayersTurn : boolean = false;
-  private isFirstTurn : boolean = true;
-  
+
+  private isGameSetToPLayersTurn: boolean = false;
+  private isFirstTurn: boolean = true;
+
   private hitMessage: string;
   private missMessage: string;
   private turnMessage: string;
@@ -56,27 +54,35 @@ export class GameComponent implements OnInit, OnDestroy{
     public translate: TranslateService,
     private route: ActivatedRoute,
     private router: Router,
-    private playerService: PlayerService,
     private notificationService: NotificationService) {
-      this.hitMessage = 'TOAST.HIT';
-      this.missMessage = 'TOAST.MISS';
-      this.turnMessage = 'TOAST.YOUR_TURN';
-      this.enemyTurnMessage = 'TOAST.ENEMY_TURN';
-   }
+    this.hitMessage = 'TOAST.HIT';
+    this.missMessage = 'TOAST.MISS';
+    this.turnMessage = 'TOAST.YOUR_TURN';
+    this.enemyTurnMessage = 'TOAST.ENEMY_TURN';
+  }
 
   ngOnInit(): void {
-    this.player = {name : this.route.snapshot.paramMap.get('name')};
-    this.getOpponent();
-    this.initializeEmptyMaps();
-    this.getShootMap();
-    this.getShipMap();
+    console.log(sessionStorage.getItem('JSESSIONID'));
+    this.player = { name: this.route.snapshot.paramMap.get('name') };
+    this.gameService.createNewSetOfMapsForGivenPlayer(this.player.name).subscribe(() => {
+      this.getOpponent();
+      this.initializeEmptyMaps();
+      this.getShootMap();
+      this.getShipMap();
+    },
+    (error: string) => {
+        console.error("ERROR: " + error);
+        this.router.navigate(['/home']);
+      })
+
 
     this.subscription = timer(0, 2000)
-    .pipe(switchMap(() => this.gameService.getCurrentGameStatus()))
-    .subscribe( currentGameStatus => {
-        if(currentGameStatus.playerNameWhoMoves === this.player.name && !currentGameStatus.playerLooser){
-          if(!this.isGameSetToPLayersTurn)
-          {
+      .pipe(switchMap(() => this.gameService.getCurrentGameStatus()))
+      .subscribe(currentGameStatus => {
+        if (currentGameStatus.playerNameWhoMoves === "")
+          return;
+        if (currentGameStatus.playerNameWhoMoves === this.player.name && !currentGameStatus.playerLooser) {
+          if (!this.isGameSetToPLayersTurn) {
             this.showMessage(this.turnMessage, NotificationType.info);
             this.getShipMap();
             this.unlockAllShotSquares();
@@ -84,27 +90,33 @@ export class GameComponent implements OnInit, OnDestroy{
             this.isFirstTurn = false;
           }
         }
-        else if(currentGameStatus.playerNameWhoMoves === this.opponent.name && !currentGameStatus.playerLooser){
+        else if (currentGameStatus.playerNameWhoMoves === this.opponent.name && !currentGameStatus.playerLooser) {
           this.blockAllShotSquares();
           this.isGameSetToPLayersTurn = false;
-          if(this.isFirstTurn){
+          if (this.isFirstTurn) {
             this.showMessage(this.enemyTurnMessage, NotificationType.info);
             this.isFirstTurn = false;
           }
         }
-        else if(currentGameStatus.playerNameWhoMoves === this.opponent.name && currentGameStatus.playerLooser){
+        else if (currentGameStatus.playerNameWhoMoves === this.opponent.name && currentGameStatus.playerLooser) {
           this.router.navigate(['/landing/win']);
         }
-        else if(currentGameStatus.playerNameWhoMoves === this.player.name && currentGameStatus.playerLooser){
+        else if (currentGameStatus.playerNameWhoMoves === this.player.name && currentGameStatus.playerLooser) {
           this.router.navigate(['/landing/loose']);
         }
-        this.playerTurn = {name : currentGameStatus.playerNameWhoMoves};
-    } );
+        this.playerTurn = { name: currentGameStatus.playerNameWhoMoves };
+      });
   }
 
-  ngOnDestroy(): void{
+  ngOnDestroy(): void {
     this.subscription.unsubscribe();
-    this.playerService.deletePlayer(this.player.name).subscribe();
+  }
+
+  /**
+   * Sends the delete request to reset parameters on the server side. Request sets player who will lose the match.
+   * @param id - square identification number
+   */
+  endTheGameDuringPlaying() {
     this.gameService.deletePlayer(this.player.name).subscribe();
   }
 
@@ -113,22 +125,22 @@ export class GameComponent implements OnInit, OnDestroy{
    * @param id - square identification number
    */
   changeStatus(id: number): void {
-    if(this.shootMap[id].status != ButtonStatus.EMPTY){
+    if (this.shootMap[id].status != ButtonStatus.EMPTY) {
       return;
     }
     this.gameService.shootPlayer(this.player.name, this.opponent.name, id)
-      .subscribe(shootResponse =>{
-        let cellStatus : ShootMapCellStatus = shootResponse.shootMapCellStatus;
+      .subscribe(shootResponse => {
+        let cellStatus: ShootMapCellStatus = shootResponse.shootMapCellStatus;
         const currentButton = this.shootMap[id];
-        if(cellStatus === ShootMapCellStatus.SHOOT_MAP_SHIP_HIT) {
+        if (cellStatus === ShootMapCellStatus.SHOOT_MAP_SHIP_HIT) {
           currentButton.status = ButtonStatus.HIT;
           this.showMessage(this.turnMessage, NotificationType.info);
           this.showMessage(this.hitMessage, NotificationType.success);
           this.playerTurn = this.player;
-          if(shootResponse.winner){
+          if (shootResponse.winner) {
             this.router.navigate(['/landing/win']);
           }
-        } else if(cellStatus === ShootMapCellStatus.SHOOT_MAP_MISS){
+        } else if (cellStatus === ShootMapCellStatus.SHOOT_MAP_MISS) {
           currentButton.status = ButtonStatus.MISS;
           this.showMessage(this.enemyTurnMessage, NotificationType.info);
           this.showMessage(this.missMessage, NotificationType.error);
@@ -136,72 +148,72 @@ export class GameComponent implements OnInit, OnDestroy{
           this.blockAllShotSquares();
         }
         this.shootMap[id] = currentButton;
-    });
+      });
   }
 
-  private initializeEmptyMaps() : void {
-    for (let i = 0; i <GameComponent.NUMBER_OF_SQUARES; i++) {
-      this.shipMap.push({id : i, status : ButtonStatus.EMPTY_BLOCKED});
-      this.shootMap.push({id : i, status : ButtonStatus.EMPTY_BLOCKED});
+  private initializeEmptyMaps(): void {
+    for (let i = 0; i < GameComponent.NUMBER_OF_SQUARES; i++) {
+      this.shipMap.push({ id: i, status: ButtonStatus.EMPTY_BLOCKED });
+      this.shootMap.push({ id: i, status: ButtonStatus.EMPTY_BLOCKED });
     }
   }
 
   private getOpponent(): void {
-    this.playerService.getPlayers()
-    .subscribe(
-      players => {
-        for(let index =0; index < GameComponent.NUMBER_OF_PLAYERS_IN_ROOM; ++index){
-          if(players[index].name != this.player.name){
-            this.opponent = players[index];
-          }
-        }
-      });
+    let players: Player[] = JSON.parse(localStorage.getItem('players'));
+    for (let index = 0; index < GameComponent.NUMBER_OF_PLAYERS_IN_ROOM; ++index) {
+      if (players[index].name != this.player.name) {
+        this.opponent = players[index];
+      }
+    }
   }
 
   private getShootMap(): void {
     this.gameService.getShootMap(this.player.name).subscribe(
-      mapShootMap =>{ this.mapShootMapToArray(mapShootMap)}
+      mapShootMap => { this.mapShootMapToArray(mapShootMap) }
     );
- }
+  }
 
- private getShipMap(): void {
-   this.gameService.getShipMap(this.player.name).subscribe(
-     mapShipMap =>{ this.mapShipMapToArray(mapShipMap);}
-   );
-}
+  private getShipMap(): void {
+    this.gameService.getShipMap(this.player.name).subscribe(
+      mapShipMap => { this.mapShipMapToArray(mapShipMap); }
+    );
+  }
 
- private mapShootMapToArray(shootMap : Map<number, ShootMapCellStatus>) : void{
-   Object.keys(shootMap).forEach(key => {
-     this.shootMap[key] = {id : parseInt(key),
-        status : shootMap[key] === ShootMapCellStatus.SHOOT_MAP_MISS
-         ? ButtonStatus.MISS :ButtonStatus.HIT};
-     });
- }
+  private mapShootMapToArray(shootMap: Map<number, ShootMapCellStatus>): void {
+    Object.keys(shootMap).forEach(key => {
+      this.shootMap[key] = {
+        id: parseInt(key),
+        status: shootMap[key] === ShootMapCellStatus.SHOOT_MAP_MISS
+          ? ButtonStatus.MISS : ButtonStatus.HIT
+      };
+    });
+  }
 
- private mapShipMapToArray(shipMap : Map<number, ShipMapCellStatus>) : void{
-   Object.keys(shipMap).forEach( key => {
-     this.shipMap[key] = {id : parseInt(key),
-      //TODO: change it to switch-case
-        status : shipMap[key] === ShipMapCellStatus.SHIP_MAP_MISS ? ButtonStatus.MISS :
-        shipMap[key] === ShipMapCellStatus.SHIP_MAP_SHIP 
-        ? ButtonStatus.SHIP : ButtonStatus.HIT};
-       });
-     }  
+  private mapShipMapToArray(shipMap: Map<number, ShipMapCellStatus>): void {
+    Object.keys(shipMap).forEach(key => {
+      this.shipMap[key] = {
+        id: parseInt(key),
+        status: shipMap[key] === ShipMapCellStatus.SHIP_MAP_MISS ? ButtonStatus.MISS :
+          shipMap[key] === ShipMapCellStatus.SHIP_MAP_SHIP
+            ? ButtonStatus.SHIP : ButtonStatus.HIT
+      };
+    });
+  }
 
   private showMessage(message: string, type: NotificationType) {
     this.translate
-        .get(message)
-        .subscribe((msg: string) => {this.notificationService.print(msg, type)});
+      .get(message)
+      .subscribe((msg: string) => { this.notificationService.print(msg, type) });
   }
 
-  private blockAllShotSquares() : void{
-    for(let square of this.shootMap){
-        square.status = square.status === ButtonStatus.EMPTY ? ButtonStatus.EMPTY_BLOCKED : square.status;
+  private blockAllShotSquares(): void {
+    for (let square of this.shootMap) {
+      square.status = square.status === ButtonStatus.EMPTY ? ButtonStatus.EMPTY_BLOCKED : square.status;
     }
   }
 
-  private unlockAllShotSquares(): void{
-    for(let square of this.shootMap){
+  private unlockAllShotSquares(): void {
+    for (let square of this.shootMap) {
       square.status = square.status === ButtonStatus.EMPTY_BLOCKED ? ButtonStatus.EMPTY : square.status;
     }
   }

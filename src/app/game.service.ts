@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 
 import { Observable, throwError } from 'rxjs';
@@ -17,11 +17,7 @@ import { CurrentGameStatus } from './current-game-status';
   providedIn: 'root'
 })
 export class GameService {
-  private gameUrl = 'https://ships-game-service-backend.herokuapp.com/maps';  // URL to web api
-
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+  private gameUrl = 'https://ships-game-service-backend.herokuapp.com/maps';
 
   /**
    * Using injection of http client
@@ -37,8 +33,7 @@ export class GameService {
 
   getShipMap(name: string) : Observable<Map<number, ShipMapCellStatus>>{
     let url : string = `${this.gameUrl}/shipmap/${name}`
-    return this.http.get<Map<number, ShipMapCellStatus>>(url, this.httpOptions) 
-      .pipe(catchError(this.handleError));
+    return this.http.get<Map<number, ShipMapCellStatus>>(url).pipe(catchError(this.handleError));
   }
 
   /**
@@ -48,8 +43,7 @@ export class GameService {
    */
   getShootMap(name: string) : Observable<Map<number, ShootMapCellStatus>>{
     let url : string = `${this.gameUrl}/shootmap/${name}`
-    return this.http.get<Map<number, ShootMapCellStatus>>(url, this.httpOptions) 
-      .pipe(catchError(this.handleError));
+    return this.http.get<Map<number, ShootMapCellStatus>>(url).pipe(catchError(this.handleError));
   }
 
   /**
@@ -61,8 +55,17 @@ export class GameService {
    */
   shootPlayer(sourceName : string, targetName : string, cellIndex : number) : Observable<ShootResponse>{
     let url : string = `${this.gameUrl}/${sourceName}-vs-${targetName}/${cellIndex}`;
-    return this.http.post<ShootResponse>(url, this.httpOptions) 
-    .pipe(catchError(this.handleError));
+    return this.http.post<ShootResponse>(url, {}).pipe(catchError(this.handleError));
+  }
+
+  
+  /**
+   * Sends the request to generate new set of maps for particular player.
+   * @param name - name of the player
+   */
+  createNewSetOfMapsForGivenPlayer(name: string){
+    let url : string = `${this.gameUrl}/${name}`
+    return this.http.post(url, {}).pipe(catchError(this.handleError));
   }
 
   /**
@@ -72,16 +75,14 @@ export class GameService {
    */
   getCurrentGameStatus() : Observable<CurrentGameStatus>{
     let url : string = `${this.gameUrl}/gamestatus`;
-    return this.http.get<CurrentGameStatus>(url, this.httpOptions) 
-    .pipe(catchError(this.handleError));
+    return this.http.get<CurrentGameStatus>(url).pipe(catchError(this.handleError));
   }
 
   /**
    * Deletes all boards and players in GameService 
    */
   deleteAllPlayers() : Observable<any> {
-    return this.http.delete(this.gameUrl, this.httpOptions) 
-    .pipe(catchError(this.handleError));
+    return this.http.delete(this.gameUrl).pipe(catchError(this.handleError));
   }
 
   /**
@@ -90,8 +91,7 @@ export class GameService {
    */
   deletePlayer(name : string) : Observable<any> {
     let url: string = `${this.gameUrl}/${name}`;
-    return this.http.delete(url, this.httpOptions) 
-    .pipe(catchError(this.handleError));
+    return this.http.delete(url).pipe(catchError(this.handleError));
   }
 
   private handleError(error: HttpErrorResponse) {
