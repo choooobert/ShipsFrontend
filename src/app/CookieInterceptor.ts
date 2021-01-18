@@ -10,9 +10,10 @@ export class CookieInterceptor implements HttpInterceptor {
 
     const clonedRequest = request.clone({ 
         withCredentials: true,
-        headers: request.headers.set('Set-Cookie', 'jsessionid=' + sessionStorage.getItem('jsessionid'))
+        headers: request.headers.set('Set-Cookie', 'JSESSIONID=' + localStorage.getItem('JSESSIONID'))
     });
 
     return next.handle(clonedRequest);
   }
+
 }
