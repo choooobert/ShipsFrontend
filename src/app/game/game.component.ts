@@ -12,6 +12,7 @@ import { ShipMapCellStatus } from '../ship-map-cell-status.enum';
 import { NotificationService } from '../notification.service';
 import { NotificationType } from '../notification.message';
 import { ButtonStatus } from '../button-status.enum';
+import { PlayerService } from '../player.service';
 
 /**
  * Represents game view of the app, contains map components in:
@@ -51,6 +52,7 @@ export class GameComponent implements OnInit, OnDestroy {
    */
   constructor(
     public gameService: GameService,
+    public playerService: PlayerService,
     public translate: TranslateService,
     private route: ActivatedRoute,
     private router: Router,
@@ -62,20 +64,21 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(sessionStorage.getItem('JSESSIONID'));
     this.player = { name: this.route.snapshot.paramMap.get('name') };
     this.gameService.createNewSetOfMapsForGivenPlayer(this.player.name).subscribe(() => {
       this.getOpponent();
       this.initializeEmptyMaps();
       this.getShootMap();
       this.getShipMap();
+      this.fetchGameStatusConstantly();
     },
     (error: string) => {
         console.error("ERROR: " + error);
         this.router.navigate(['/home']);
       })
+  }
 
-
+  fetchGameStatusConstantly() {
     this.subscription = timer(0, 2000)
       .pipe(switchMap(() => this.gameService.getCurrentGameStatus()))
       .subscribe(currentGameStatus => {
@@ -100,9 +103,11 @@ export class GameComponent implements OnInit, OnDestroy {
         }
         else if (currentGameStatus.playerNameWhoMoves === this.opponent.name && currentGameStatus.playerLooser) {
           this.router.navigate(['/landing/win']);
+          this.removePlayersInGameAndRoomService();
         }
         else if (currentGameStatus.playerNameWhoMoves === this.player.name && currentGameStatus.playerLooser) {
           this.router.navigate(['/landing/loose']);
+          this.removePlayersInGameAndRoomService();
         }
         this.playerTurn = { name: currentGameStatus.playerNameWhoMoves };
       });
@@ -112,12 +117,17 @@ export class GameComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  removePlayersInGameAndRoomService() {
+    this.playerService.deleteAllPlayers().subscribe();
+    this.gameService.deleteAllPlayers().subscribe();
+  }
+
   /**
    * Sends the delete request to reset parameters on the server side. Request sets player who will lose the match.
    * @param id - square identification number
    */
   endTheGameDuringPlaying() {
-    this.gameService.deletePlayer(this.player.name).subscribe();
+    this.gameService.resetBackendGameStatusAndIndicateLoser(this.player.name).subscribe();
   }
 
   /**
