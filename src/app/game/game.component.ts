@@ -128,6 +128,7 @@ export class GameComponent implements OnInit, OnDestroy {
    */
   endTheGameDuringPlaying() {
     this.gameService.resetBackendGameStatusAndIndicateLoser(this.player.name).subscribe();
+    this.playerService.deleteAllPlayers().subscribe();
   }
 
   /**
