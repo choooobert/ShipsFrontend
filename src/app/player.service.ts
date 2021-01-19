@@ -49,14 +49,6 @@ export class PlayerService {
   }
 
   /**
-   * DELETE: delete all the players from the server
-   */
-  deleteAllPlayers(): Observable<Player[]> {
-    const url = `${this.playersUrl}`;
-    return this.http.delete<Player[]>(url).pipe(catchError(this.handleError));
-  }
-
-  /**
   * Handle Http operation that failed.
   * Let the app continue.
   * @param operation - name of the operation that failed
