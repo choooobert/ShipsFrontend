@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { PlayerService } from '../player.service';
-import { Player } from '../player';
-import { GameService } from '../game.service';
 import { TranslateService } from '@ngx-translate/core';
 import { StatusWithToken } from '../StatusWithToken';
 
@@ -17,7 +15,6 @@ import { StatusWithToken } from '../StatusWithToken';
 })
 export class HomeComponent implements OnInit {
 
-  private players: Player[];
   error_message:string;
 
   /**
@@ -26,7 +23,6 @@ export class HomeComponent implements OnInit {
    * @param router - router to be used
    */
   constructor(private playerService: PlayerService,
-    private gameService: GameService,
     private translate: TranslateService,
     private router: Router) { }
   
@@ -66,34 +62,9 @@ export class HomeComponent implements OnInit {
       );
   }
 
-
-  /**
-   * Delete all players in the frontend, RoomService and GameService
-   * @param name - player name
-   */
-  delete(): void {
-    this.playerService.deleteAllPlayers()
-      .subscribe(
-        () => {this.players = [];}, 
-        error => { 
-          console.log(error); 
-          this.error_message = error;});
-    this.gameService.deleteAllPlayers().subscribe();
-  }
-
-
   private assignErrorMessage(error: string) {
     this.translate
         .get(error)
         .subscribe((error: string) => this.error_message = error);
-  }
-
-  /**
-   * Gets players list from the server;
-   * Can be used to redirect to landing page if list already contains two players
-   */
-  private getPlayers(): void {
-    this.playerService.getPlayers()
-    .subscribe(players => this.players = players);
   }
 }

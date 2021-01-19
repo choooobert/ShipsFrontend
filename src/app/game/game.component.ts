@@ -119,7 +119,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   removePlayersInGameAndRoomService() {
-    this.playerService.deleteAllPlayers().subscribe();
+    this.playerService.deletePlayer(this.player.name).subscribe();
     this.gameService.deleteAllPlayers().subscribe();
   }
 
@@ -129,7 +129,7 @@ export class GameComponent implements OnInit, OnDestroy {
    */
   endTheGameDuringPlaying() {
     this.gameService.resetBackendGameStatusAndIndicateLoser(this.player.name).subscribe();
-    this.playerService.deleteAllPlayers().subscribe();
+    this.playerService.deletePlayer(this.player.name).subscribe();
   }
 
   /**
