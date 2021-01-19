@@ -13,6 +13,7 @@ import { NotificationService } from '../notification.service';
 import { NotificationType } from '../notification.message';
 import { ButtonStatus } from '../button-status.enum';
 import { PlayerService } from '../player.service';
+import { CurrentGameStatus } from '../current-game-status';
 
 /**
  * Represents game view of the app, contains map components in:
@@ -81,10 +82,8 @@ export class GameComponent implements OnInit, OnDestroy {
   fetchGameStatusConstantly() {
     this.subscription = timer(0, 2000)
       .pipe(switchMap(() => this.gameService.getCurrentGameStatus()))
-      .subscribe(currentGameStatus => {
-        if (currentGameStatus.playerNameWhoMoves === "")
-          return;
-        if (currentGameStatus.playerNameWhoMoves === this.player.name && !currentGameStatus.playerLooser) {
+      .subscribe((currentGameStatus : CurrentGameStatus) => {
+        if (currentGameStatus.playerNameWhoMoves === this.player.name && !currentGameStatus.playerLoser) {
           if (!this.isGameSetToPLayersTurn) {
             this.showMessage(this.turnMessage, NotificationType.info);
             this.getShipMap();
@@ -93,7 +92,7 @@ export class GameComponent implements OnInit, OnDestroy {
             this.isFirstTurn = false;
           }
         }
-        else if (currentGameStatus.playerNameWhoMoves === this.opponent.name && !currentGameStatus.playerLooser) {
+        else if (currentGameStatus.playerNameWhoMoves === this.opponent.name && !currentGameStatus.playerLoser) {
           this.blockAllShotSquares();
           this.isGameSetToPLayersTurn = false;
           if (this.isFirstTurn) {
@@ -101,15 +100,17 @@ export class GameComponent implements OnInit, OnDestroy {
             this.isFirstTurn = false;
           }
         }
-        else if (currentGameStatus.playerNameWhoMoves === this.opponent.name && currentGameStatus.playerLooser) {
+        else if (currentGameStatus.playerNameWhoMoves === this.opponent.name && currentGameStatus.playerLoser) {
           this.router.navigate(['/landing/win']);
           this.removePlayersInGameAndRoomService();
         }
-        else if (currentGameStatus.playerNameWhoMoves === this.player.name && currentGameStatus.playerLooser) {
+        else if (currentGameStatus.playerNameWhoMoves === this.player.name && currentGameStatus.playerLoser) {
           this.router.navigate(['/landing/loose']);
           this.removePlayersInGameAndRoomService();
         }
-        this.playerTurn = { name: currentGameStatus.playerNameWhoMoves };
+        if (currentGameStatus.playerNameWhoMoves != ""){
+          this.playerTurn = { name: currentGameStatus.playerNameWhoMoves };
+        }
       });
   }
 
