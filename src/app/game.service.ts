@@ -89,7 +89,7 @@ export class GameService {
    * Deletes a player in GameService 
    * @param name - name of the player to delete
    */
-  deletePlayer(name : string) : Observable<any> {
+  resetBackendGameStatusAndIndicateLoser(name : string) : Observable<any> {
     let url: string = `${this.gameUrl}/${name}`;
     return this.http.delete(url).pipe(catchError(this.handleError));
   }
